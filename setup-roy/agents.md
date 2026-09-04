@@ -21,6 +21,7 @@ Si la petición puede cubrirse con el pack en `docs/setup-roy/`, lee primero `do
 | [`agents/reviewer.md`](agents/reviewer.md) | Revisar código o un diff |
 | [`orchestrator/`](orchestrator/orchestrator.md) | Coordinar varios agentes en un flujo multi-paso |
 | [`scripts/git_ship.py`](scripts/git_ship.py) | Commit + push con elección de clave SSH y autor |
+| [`EXTENDING.md`](EXTENDING.md) | Añadir piezas nuevas al pack sin romper el diseño |
 
 Próximas herramientas (aún no): workflow `main` / `develop` + PR.
 

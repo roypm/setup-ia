@@ -8,10 +8,12 @@ Lo que viaja a tus repos es solo la carpeta **`setup-roy/`**. El resto de este r
 
 | Ruta | ¿Se copia al proyecto? | Para qué |
 |------|------------------------|----------|
-| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills, agentes, orquestador, scripts |
+| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills, agentes, orquestador, scripts, guía de extensión |
 | [`INSTALL.md`](INSTALL.md) | No | Cómo instalar (humano e IA) |
-| [`EXTENDING.md`](EXTENDING.md) | No | Cómo añadir piezas nuevas al kit |
 | [`bootstrap.py`](bootstrap.py) | No | Instala el pack y actualiza `AGENTS.md` |
+
+Cómo instalar: **[INSTALL.md](INSTALL.md)**.  
+Cómo añadir piezas al pack: **[`setup-roy/EXTENDING.md`](setup-roy/EXTENDING.md)** (viaja con el pack a cada proyecto).
 
 ## Resultado en un proyecto
 
@@ -23,13 +25,12 @@ tu-proyecto/
 └── docs/
     └── setup-roy/
         ├── agents.md      ← índice (entrada)
+        ├── EXTENDING.md   ← cómo añadir piezas
         ├── skills/
         ├── agents/
         ├── orchestrator/
         └── scripts/
 ```
-
-Cómo instalar (humano o IA): **[INSTALL.md](INSTALL.md)**.
 
 ## Cómo se usa
 
