@@ -10,7 +10,7 @@ The index [`agents.md`](agents.md) is the source of truth: if it is not register
 
 1. **On demand:** skills, agents, orchestrators, and similar activate only when the user asks (or the orchestrator delegates).
 2. **Stable router:** you do not need to change the project-root `AGENTS.md` snippet when adding pieces; evolve this pack and its index.
-3. **One piece, one place:** do not duplicate the same logic across skill + agent + script.
+3. **One piece, one place:** do not duplicate the same logic across skill + agent + workflow doc.
 4. **No secrets** in the pack (tokens, keys, passwords are resolved at runtime).
 
 ## Where things go
@@ -21,8 +21,9 @@ Paths relative to this pack root (`setup-roy/` or `docs/setup-roy/`):
 |------|----------------|-------|
 | Skill (discipline / flow) | `skills/<name>/` | Usually includes `SKILL.md` |
 | Specialized agent | `agents/<name>.md` | Usable alone, without orchestrator |
-| Orchestrator / flows | `orchestrator/` | Coordinates agents; may have several flows |
-| Mechanical script | `scripts/` | CLI; do not burn tokens on what the script already does |
+| Orchestrator / flows | `orchestrator/` | Coordinates agents; named flows in `orchestrator.md` |
+| Workflow policy | `workflows/` | Shared conventions (e.g. git-flow); not an agent |
+| Mechanical script | `scripts/` | Optional CLI; do not burn tokens on what a script already does |
 | Templates / prompts | `prompts/` or `templates/` | PR, issues, messages; register in the index |
 | Checklists | `checklists/` (or similar) | Definition of done, pre-merge, etc. |
 | MCP / IDE config | see [MCP and IDE](#mcp-and-ide) | Often environment config, not only a `.md` |
@@ -52,6 +53,11 @@ Regardless of piece type:
 - Role, limits (what it does not do), and success criteria.
 - Agents: one `.md` per agent under `agents/`.
 
+### Extra for workflows
+
+- Short policy doc; agents and orchestrator link to it instead of re-stating rules.
+- Register in [`agents.md`](agents.md).
+
 ## MCP and IDE
 
 MCP servers, Cursor/Claude rules, or other tool configs:
@@ -64,25 +70,26 @@ MCP servers, Cursor/Claude rules, or other tool configs:
 ## Naming
 
 - Skills: kebab-case folder with `SKILL.md` (`skills/grilling/SKILL.md`).
-- Agents: short-name file in `agents/` (`reviewer.md`).
-- Scripts: `snake_case.py`.
-- Orchestrators: clear markdown under `orchestrator/` (`orchestrator.md`, or `flows/<name>.md` if several).
+- Agents: short-name file in `agents/` (`surgical.md`).
+- Scripts: `snake_case.py` (if you add any).
+- Orchestrators: clear markdown under `orchestrator/` (`orchestrator.md`).
+- Workflows: kebab-case under `workflows/` (`git-flow.md`).
 
 ## Examples
 
 ### Standalone agent
 
-1. Create `agents/debugger.md` (role, limits, success).
+1. Create `agents/security.md` (role, limits, success).
 2. In `agents.md`: when to use it and the path.
-3. (Optional) Mention it in the orchestrator if it should be delegable.
+3. Mention it in [`orchestrator/orchestrator.md`](orchestrator/orchestrator.md) if it should be delegable in a named flow.
 
 Do not put it inside `orchestrator/`: it lives in `agents/` and is invoked directly.
 
-### Script
+### Workflow policy
 
-1. Create `scripts/my_tool.py` with argparse and `--dry-run` if applicable.
-2. Document in `scripts/README.md`.
-3. Register in `agents.md`.
+1. Create `workflows/release-notes.md` (or similar).
+2. Entry in `agents.md`: *when to follow this policy*.
+3. Link from the orchestrator `ship` (or other) flow if relevant.
 
 ### New type (e.g. templates)
 

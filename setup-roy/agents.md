@@ -1,6 +1,6 @@
 # Setup Roy
 
-Portable pack index for AI assistants. Activate skills, agents, and the orchestrator **only when the user asks** (or the orchestrator delegates). Prefer scripts over reinventing mechanical git flows in prompts.
+Portable pack index for AI assistants. Activate skills, agents, and the orchestrator **only when the user asks** (or the orchestrator delegates).
 
 ## When to use this pack
 
@@ -11,12 +11,24 @@ If the request may be covered by a piece below, follow this index and open that 
 | Piece | When |
 |-------|------|
 | [`skills/grilling/`](skills/grilling/SKILL.md) | Align on an idea/plan: interview until the decision tree is closed |
-| [`agents/planner.md`](agents/planner.md) | Plan a change (standalone, without orchestrator) |
-| [`agents/implementer.md`](agents/implementer.md) | Implement a scoped change |
-| [`agents/reviewer.md`](agents/reviewer.md) | Review code or a diff |
-| [`orchestrator/`](orchestrator/orchestrator.md) | Coordinate multiple agents in a multi-step flow |
-| [`scripts/git_ship.py`](scripts/git_ship.py) | Commit + push with SSH key and author selection |
+| [`skills/ponytail/`](skills/ponytail/SKILL.md) | Lazy senior mode: minimal path via YAGNI ladder (lite/full/ultra) |
+| [`agents/coder.md`](agents/coder.md) | Write substantial code with engineering principles internalized |
+| [`agents/surgical.md`](agents/surgical.md) | Fix/move small changes: look from afar, no patch-on-patch |
+| [`agents/actions.md`](agents/actions.md) | Create or repair GitHub Actions / CI/CD |
+| [`agents/tester.md`](agents/tester.md) | Add real tests; reject false positives |
+| [`agents/security.md`](agents/security.md) | Secrets/PII leaks + auth/routes/DB sealing (perfectionist review) |
+| [`agents/i18n.md`](agents/i18n.md) | Locales and register-aware translation (when i18n applies) |
+| [`orchestrator/`](orchestrator/orchestrator.md) | Coordinate agents in a named multi-step flow |
+| [`workflows/git-flow.md`](workflows/git-flow.md) | main / develop / PR / deploy-from-main policy |
 | [`EXTENDING.md`](EXTENDING.md) | Add new pieces to this pack without breaking the design |
+
+## Routing
+
+- Large feature or design change → **coder**
+- Bug fix, small move, “fix this” → **surgical**
+- Secrets, auth sealing, “harden” / security review → **security**
+- If unsure and the change is small → **surgical**
+- Multi-step work the user wants coordinated → **orchestrator**
 
 ## Character: how to reason, not only what to do
 
@@ -46,6 +58,6 @@ Do not be a relay for the latest order. If something is ambiguous, contradictory
 - Small changes, small code: do not add abstractions, error handling, validations, or refactors for cases that were not requested and cannot occur.
 - After any change, run the project's build/lint/tests if they exist before claiming it works.
 - If a key fact is missing (framework, repo convention, expected behavior), ask before assuming.
-- Never commit or push unless explicitly asked. When asked, prefer `scripts/git_ship.py`. Never use `--force`, `--no-verify`, or `--no-gpg-sign` unless explicitly asked.
+- Never commit or push unless explicitly asked. When doing git work, follow [`workflows/git-flow.md`](workflows/git-flow.md): work on `develop` (or feature → develop); release via PR develop → main; do not commit straight to `main` unless explicitly asked. Never use `--force`, `--no-verify`, or `--no-gpg-sign` unless explicitly asked.
 - Do not delete or overwrite files with unversioned work without confirming first.
 - Do not print or write full secrets, tokens, or passwords into versioned files, logs, or commits.

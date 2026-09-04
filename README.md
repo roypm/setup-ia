@@ -8,7 +8,7 @@ Lo que viaja a tus repos es solo la carpeta **`setup-roy/`**. El resto de este r
 
 | Ruta | ¿Se copia al proyecto? | Para qué |
 |------|------------------------|----------|
-| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills, agentes, orquestador, scripts, guía de extensión |
+| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills, agentes, orquestador, workflows, guía de extensión |
 | [`INSTALL.md`](INSTALL.md) | No | Cómo instalar (humano e IA) |
 | [`bootstrap.py`](bootstrap.py) | No | Instala el pack y actualiza `AGENTS.md` |
 
@@ -29,7 +29,7 @@ tu-proyecto/
         ├── skills/
         ├── agents/
         ├── orchestrator/
-        └── scripts/
+        └── workflows/
 ```
 
 ## Cómo se usa
