@@ -83,14 +83,14 @@ def prompt_choice(title: str, options: list[str], default_index: int = 0) -> int
         mark = " (default)" if i - 1 == default_index else ""
         print(f"  {i}) {opt}{mark}")
     while True:
-        raw = input(f"elige [1-{len(options)}] (Enter={default_index + 1}): ").strip()
+        raw = input(f"choose [1-{len(options)}] (Enter={default_index + 1}): ").strip()
         if raw == "":
             return default_index
         if raw.isdigit():
             n = int(raw)
             if 1 <= n <= len(options):
                 return n - 1
-        print("opción inválida")
+        print("invalid option")
 
 
 def prompt_text(label: str, default: str | None) -> str:
@@ -100,7 +100,7 @@ def prompt_text(label: str, default: str | None) -> str:
         return raw
     if default:
         return default
-    die(f"{label} es obligatorio")
+    die(f"{label} is required")
 
 
 def select_key(explicit: str | None, *, non_interactive: bool) -> Path | None:
@@ -116,17 +116,17 @@ def select_key(explicit: str | None, *, non_interactive: bool) -> Path | None:
         return None
 
     if len(keys) == 1:
-        print(f"SSH key: {keys[0]} (única encontrada)")
+        print(f"SSH key: {keys[0]} (only key found)")
         return keys[0]
 
     if non_interactive:
         die(
-            "varias claves SSH encontradas; pasa --key <path> "
-            "o ejecuta en modo interactivo"
+            "multiple SSH keys found; pass --key <path> "
+            "or run interactively"
         )
 
     labels = [str(k) for k in keys]
-    idx = prompt_choice("Claves SSH encontradas:", labels, 0)
+    idx = prompt_choice("SSH keys found:", labels, 0)
     return keys[idx]
 
 
@@ -145,16 +145,15 @@ def select_author(
     if non_interactive:
         if not default_name or not default_email:
             die(
-                "falta user.name / user.email; pasa --name y --email "
-                "o configura git"
+                "missing user.name / user.email; pass --name and --email "
+                "or configure git"
             )
         return default_name, default_email
 
-    print("Autor del commit (Enter = default):")
+    print("Commit author (Enter = default):")
     final_name = prompt_text("  name", default_name)
     final_email = prompt_text("  email", default_email)
     return final_name, final_email
-
 
 def build_env(key: Path | None) -> dict[str, str]:
     env = os.environ.copy()

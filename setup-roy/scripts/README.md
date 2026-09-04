@@ -1,31 +1,31 @@
 # Scripts (setup-roy)
 
-Herramientas mecánicas: la IA (o tú) las ejecuta; no reinventar el flujo en prompts.
+Mechanical tools: the AI (or you) runs them; do not reinvent the flow in prompts.
 
 ## `git_ship.py`
 
-Commit + push eligiendo clave SSH y autor.
+Commit + push with SSH key and author selection.
 
 ```bash
-# Desde la raíz del proyecto (tras instalar el pack):
-python docs/setup-roy/scripts/git_ship.py -m "mensaje del commit"
+# From the project root (after installing the pack):
+python docs/setup-roy/scripts/git_ship.py -m "commit message"
 
-# Añadir paths, no pushear, simular:
+# Add paths, skip push, dry-run:
 python docs/setup-roy/scripts/git_ship.py -m "fix x" path/a path/b --no-push
 python docs/setup-roy/scripts/git_ship.py -m "msg" --dry-run
 
-# Sin prompts (CI / IA con datos ya elegidos):
+# Non-interactive (CI / AI with choices already made):
 python docs/setup-roy/scripts/git_ship.py -m "msg" --yes \
   --key ~/.ssh/id_ed25519_work \
-  --name "Nombre" --email "tu@email"
+  --name "Name" --email "you@email"
 ```
 
-Comportamiento:
+Behavior:
 
-1. Lista claves privadas en `~/.ssh/` (heurística: `id_*` / `ssh_*` o con `.pub` hermano).
-2. Si hay varias, pregunta cuál usar (o exige `--key` con `--yes`).
-3. Propone autor desde `git config user.*`; permite cambiarlo.
-4. `git commit` con ese autor; `GIT_SSH_COMMAND` con la clave elegida.
-5. `git push` a la upstream de la rama, o `git push -u origin <branch>` si no hay upstream.
+1. Lists private keys under `~/.ssh/` (heuristic: `id_*` / `ssh_*` or sibling `.pub`).
+2. If several, asks which to use (or requires `--key` with `--yes`).
+3. Proposes author from `git config user.*`; allows override.
+4. `git commit` with that author; `GIT_SSH_COMMAND` with the chosen key.
+5. `git push` to the branch upstream, or `git push -u origin <branch>` if none.
 
-Flags: `-m/--message`, `--key`, `--name`, `--email`, `--no-push`, `--dry-run`, `-y/--yes`, y paths opcionales para `git add`.
+Flags: `-m/--message`, `--key`, `--name`, `--email`, `--no-push`, `--dry-run`, `-y/--yes`, and optional paths for `git add`.

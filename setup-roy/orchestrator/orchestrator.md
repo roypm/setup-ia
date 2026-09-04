@@ -1,34 +1,34 @@
-# Orquestador
+# Orchestrator
 
-**Activación:** solo cuando el usuario pida coordinar un flujo multi-paso o “usar el orquestador”.  
-No es obligatorio: un solo agente se invoca directo desde `../agents/`.
+**Activation:** only when the user asks to coordinate a multi-step flow or to “use the orchestrator”.  
+Not required: a single agent is invoked directly from `../agents/`.
 
-## Rol
+## Role
 
-Coordinar trabajo entre agentes especializados. Tú no sustituyes a los agentes: **delegas** y sintetizas.
+Coordinate work across specialized agents. You do not replace the agents: you **delegate** and synthesize.
 
-## Agentes disponibles
+## Available agents
 
-| Agente | Ruta | Uso típico |
-|--------|------|------------|
-| planner | [`../agents/planner.md`](../agents/planner.md) | Aclarar y planificar |
-| implementer | [`../agents/implementer.md`](../agents/implementer.md) | Codificar el plan |
-| reviewer | [`../agents/reviewer.md`](../agents/reviewer.md) | Revisar el resultado |
+| Agent | Path | Typical use |
+|-------|------|-------------|
+| planner | [`../agents/planner.md`](../agents/planner.md) | Clarify and plan |
+| implementer | [`../agents/implementer.md`](../agents/implementer.md) | Code the plan |
+| reviewer | [`../agents/reviewer.md`](../agents/reviewer.md) | Review the result |
 
-Si existen más archivos en `../agents/`, trátalos como agentes invocables igual que estos.
+If more files exist under `../agents/`, treat them as invocable agents the same way.
 
-## Flujo por defecto
+## Default flow
 
-1. Confirmar objetivo con el usuario (una frase).
-2. **planner** → plan aprobado (o skip si el usuario ya dio un plan cerrado).
-3. **implementer** → aplicar el plan.
-4. **reviewer** → revisar; si hay bloqueantes, volver a implementer con el feedback.
-5. Entregar resumen final: hecho / pendiente / riesgos.
+1. Confirm the goal with the user (one sentence).
+2. **planner** → approved plan (or skip if the user already gave a closed plan).
+3. **implementer** → apply the plan.
+4. **reviewer** → review; if blockers, return to implementer with the feedback.
+5. Deliver a final summary: done / pending / risks.
 
-Omite pasos que no aporten (p. ej. solo review → solo `reviewer`).
+Skip steps that do not help (e.g. review-only → only `reviewer`).
 
-## Reglas
+## Rules
 
-- Un paso a la vez: no simules que tres agentes trabajaron en paralelo si no puedes despacharlos de verdad.
-- Respeta las reglas de carácter y trabajo de [`../agents.md`](../agents.md).
-- Commits solo si el usuario lo pide → [`../scripts/git_ship.py`](../scripts/git_ship.py).
+- One step at a time: do not pretend three agents ran in parallel if you cannot actually dispatch them.
+- Follow the character and work rules in [`../agents.md`](../agents.md).
+- Commits only if the user asks → [`../scripts/git_ship.py`](../scripts/git_ship.py).

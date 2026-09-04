@@ -1,95 +1,97 @@
-# Extender este pack
+# Extending this pack
 
-Guía para **añadir piezas** a setup-roy sin romper el diseño. Válida tanto en el meta-repo (`setup-ia`) como en un proyecto donde el pack ya está en `docs/setup-roy/`.
+Guide for **adding pieces** to setup-roy without breaking the design. Applies in the meta-repo (`setup-ia`) and in a project where the pack lives at `docs/setup-roy/`.
 
-El índice [`agents.md`](agents.md) es la fuente de verdad: si no está registrado ahí, para la IA **no existe**.
+The index [`agents.md`](agents.md) is the source of truth: if it is not registered there, for the AI it **does not exist**.
 
-## Principios
+**Language:** base pack docs ship in English (faster for models). New pieces may be written in another language if the index entry is clear about when to use them.
 
-1. **Bajo demanda:** skills, agentes, orquestadores y similares solo se activan cuando el usuario lo pide (o el orquestador delega).
-2. **Router estable:** el snippet de `AGENTS.md` en la raíz del proyecto no hace falta tocarlo al añadir piezas; evoluciona este pack y su índice.
-3. **Una pieza, un sitio:** no dupliques la misma lógica en skill + agente + script.
-4. **Sin secretos** en el pack (tokens, claves, passwords se resuelven en runtime).
+## Principles
 
-## Dónde va cada cosa
+1. **On demand:** skills, agents, orchestrators, and similar activate only when the user asks (or the orchestrator delegates).
+2. **Stable router:** you do not need to change the project-root `AGENTS.md` snippet when adding pieces; evolve this pack and its index.
+3. **One piece, one place:** do not duplicate the same logic across skill + agent + script.
+4. **No secrets** in the pack (tokens, keys, passwords are resolved at runtime).
 
-Rutas relativas a la raíz de este pack (`setup-roy/` o `docs/setup-roy/`):
+## Where things go
 
-| Tipo | Carpeta típica | Notas |
+Paths relative to this pack root (`setup-roy/` or `docs/setup-roy/`):
+
+| Type | Typical folder | Notes |
 |------|----------------|-------|
-| Skill (disciplina / flujo) | `skills/<nombre>/` | Suele llevar `SKILL.md` |
-| Agente especializado | `agents/<nombre>.md` | Usable solo, sin orquestador |
-| Orquestador / flujos | `orchestrator/` | Coordina agentes; puede haber varios flujos |
-| Script mecánico | `scripts/` | CLI; no gastar tokens en lo que el script ya hace |
-| Plantillas / prompts | `prompts/` o `templates/` | PR, issues, mensajes; registrar en el índice |
-| Checklists | `checklists/` (o similar) | Definition of done, pre-merge, etc. |
-| MCP / config de IDE | ver [MCP e IDE](#mcp-e-ide) | A menudo es config del entorno, no solo un `.md` |
-| Tipo nuevo | Propón carpeta aquí | Misma [checklist](#checklist-común) + entrada en el índice |
+| Skill (discipline / flow) | `skills/<name>/` | Usually includes `SKILL.md` |
+| Specialized agent | `agents/<name>.md` | Usable alone, without orchestrator |
+| Orchestrator / flows | `orchestrator/` | Coordinates agents; may have several flows |
+| Mechanical script | `scripts/` | CLI; do not burn tokens on what the script already does |
+| Templates / prompts | `prompts/` or `templates/` | PR, issues, messages; register in the index |
+| Checklists | `checklists/` (or similar) | Definition of done, pre-merge, etc. |
+| MCP / IDE config | see [MCP and IDE](#mcp-and-ide) | Often environment config, not only a `.md` |
+| New type | Propose a folder here | Same [common checklist](#common-checklist) + index entry |
 
-Si no estás seguro del tipo: **índice primero** (entrada clara) y carpeta que no choque con las existentes.
+If unsure of the type: **index first** (clear entry) and a folder that does not collide with existing ones.
 
-## Checklist común
+## Common checklist
 
-Da igual el tipo de pieza:
+Regardless of piece type:
 
-1. Créala en la carpeta correcta (o propone una nueva con criterio).
-2. Añade una entrada en [`agents.md`](agents.md): qué es, cuándo usarla, ruta.
-3. Deja explícita la activación bajo demanda (salvo scripts que el usuario/IA ejecutan a propósito).
-4. Si un orquestador debe poder delegarle trabajo, actualiza `orchestrator/` (lista de agentes / flujo).
-5. No metas secretos ni archivos del meta-repo de instalación (`INSTALL.md`, `bootstrap.py`, etc.).
-6. No cambies el snippet canónico de la raíz del proyecto salvo que cambie el **contrato del router** (raro).
+1. Create it in the right folder (or propose a new one with a clear reason).
+2. Add an entry in [`agents.md`](agents.md): what it is, when to use it, path.
+3. State on-demand activation explicitly (except scripts the user/AI runs on purpose).
+4. If an orchestrator should be able to delegate to it, update `orchestrator/` (agent list / flow).
+5. Do not put secrets or meta-repo install files (`INSTALL.md`, `bootstrap.py`, etc.) into the pack.
+6. Do not change the project-root canonical snippet unless the **router contract** itself changes (rare).
 
-### Extra si es script
+### Extra for scripts
 
-- CLI clara (`--help`).
-- `--dry-run` si toca disco, git o red.
-- Documenta uso breve en `scripts/README.md` (o equivalente) **y** en el índice.
+- Clear CLI (`--help`).
+- `--dry-run` if it touches disk, git, or the network.
+- Brief usage in `scripts/README.md` (or equivalent) **and** in the index.
 
-### Extra si es skill o agente
+### Extra for skills or agents
 
-- Rol, límites (qué no hace) y criterio de éxito.
-- Agentes: un `.md` por agente en `agents/`.
+- Role, limits (what it does not do), and success criteria.
+- Agents: one `.md` per agent under `agents/`.
 
-## MCP e IDE
+## MCP and IDE
 
-MCP servers, rules de Cursor/Claude u otras configs de herramienta:
+MCP servers, Cursor/Claude rules, or other tool configs:
 
-- Pueden vivir como **documentación + ejemplo** en el pack (p. ej. `mcp/`) o como guía “aplicar en el proyecto destino”.
-- Regístralos en [`agents.md`](agents.md) (cuándo usarlos / qué aportan).
-- No asumas que todos los consumidores usan el mismo IDE: el índice debe funcionar aunque no haya MCP.
-- Credenciales y URLs privadas: fuera del pack versionado.
+- May live as **docs + examples** in the pack (e.g. `mcp/`) or as guidance to apply in the destination project.
+- Register them in [`agents.md`](agents.md) (when to use / what they add).
+- Do not assume every consumer uses the same IDE: the index must work without MCP.
+- Credentials and private URLs: outside the versioned pack.
 
 ## Naming
 
-- Skills: carpeta en kebab-case con `SKILL.md` (`skills/grilling/SKILL.md`).
-- Agentes: un archivo de nombre corto en `agents/` (`reviewer.md`).
+- Skills: kebab-case folder with `SKILL.md` (`skills/grilling/SKILL.md`).
+- Agents: short-name file in `agents/` (`reviewer.md`).
 - Scripts: `snake_case.py`.
-- Orquestadores: markdown claro en `orchestrator/` (`orchestrator.md`, o `flows/<nombre>.md` si hay varios).
+- Orchestrators: clear markdown under `orchestrator/` (`orchestrator.md`, or `flows/<name>.md` if several).
 
-## Ejemplos
+## Examples
 
-### Agente usable solo
+### Standalone agent
 
-1. Crea `agents/debugger.md` (rol, límites, éxito).
-2. En `agents.md`: cuándo usarlo y la ruta.
-3. (Opcional) Menciónalo en el orquestador si debe poder delegarse.
+1. Create `agents/debugger.md` (role, limits, success).
+2. In `agents.md`: when to use it and the path.
+3. (Optional) Mention it in the orchestrator if it should be delegable.
 
-No hace falta meterlo dentro de `orchestrator/`: vive en `agents/` y se invoca directo.
+Do not put it inside `orchestrator/`: it lives in `agents/` and is invoked directly.
 
 ### Script
 
-1. Crea `scripts/mi_tool.py` con argparse y `--dry-run` si aplica.
-2. Documenta en `scripts/README.md`.
-3. Regístralo en `agents.md`.
+1. Create `scripts/my_tool.py` with argparse and `--dry-run` if applicable.
+2. Document in `scripts/README.md`.
+3. Register in `agents.md`.
 
-### Tipo nuevo (p. ej. plantillas)
+### New type (e.g. templates)
 
-1. Crea `prompts/pr_body.md` (o la carpeta que elijas).
-2. Entrada en `agents.md`: *cuándo usar esta plantilla*.
-3. No hace falta tocar el snippet de `AGENTS.md` en la raíz del proyecto.
+1. Create `prompts/pr_body.md` (or the folder you choose).
+2. Entry in `agents.md`: *when to use this template*.
+3. No need to touch the project-root `AGENTS.md` snippet.
 
-## Qué no hace falta tocar al extender
+## What you usually do not need to touch
 
-- Instalación del meta-repo (`INSTALL.md`, `bootstrap.py`) — salvo que cambie la forma de instalar el pack.
-- El snippet de `AGENTS.md` en la raíz del proyecto — el catálogo nuevo se descubre vía este índice tras actualizar el pack.
-- README del meta-repo — solo si quieres anunciar la pieza a humanos.
+- Meta-repo install (`INSTALL.md`, `bootstrap.py`) — unless how the pack is installed changes.
+- Project-root `AGENTS.md` snippet — new catalog entries are discovered via this index after updating the pack.
+- Meta-repo README — only if you want to announce the piece to humans.

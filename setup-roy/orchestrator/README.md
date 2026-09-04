@@ -1,8 +1,8 @@
-# Orquestador (setup-roy)
+# Orchestrator (setup-roy)
 
-Coordina agentes en `../agents/` cuando el trabajo es multi-paso.
+Coordinates agents under `../agents/` when the work is multi-step.
 
-- Definición: [`orchestrator.md`](orchestrator.md)
-- Los agentes **no** viven aquí: están en `../agents/` y se pueden usar sin orquestador.
+- Definition: [`orchestrator.md`](orchestrator.md)
+- Agents do **not** live here: they are in `../agents/` and can be used without the orchestrator.
 
-Invocación típica: *“usa el orquestador para …”*.
+Typical invocation: *“use the orchestrator to …”*.

@@ -34,4 +34,4 @@ tu-proyecto/
 
 ## Cómo se usa
 
-Cuando pides algo que cubre el pack, la IA entra por el `AGENTS.md` de la raíz. Ahí está el snippet que la redirige a `docs/setup-roy/agents.md`, donde se decide qué pieza usar según la tarea y cómo debe actuar cada una. Si la tarea no está cubierta por el pack, trabaja con normalidad.
+Cuando pides algo que cubre el pack, la IA entra por el `AGENTS.md` de la raíz. El snippet la redirige a `docs/setup-roy/agents.md` (índice en inglés): allí elige la pieza según la tarea. Si no encaja con el pack, trabaja con normalidad. El contenido base del pack está en inglés para las IAs; puedes añadir piezas nuevas en otro idioma si el índice queda claro.

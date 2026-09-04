@@ -16,7 +16,7 @@ import tempfile
 from pathlib import Path
 
 SNIPPET = """## Setup Roy
-Si la petición puede cubrirse con el pack en `docs/setup-roy/`, lee primero `docs/setup-roy/agents.md` y sigue su índice. Si no, trabaja con normalidad.
+If the request may be covered by the pack under `docs/setup-roy/`, read `docs/setup-roy/agents.md` first and follow its index. Otherwise work normally.
 """
 
 SNIPPET_MARKER = "## Setup Roy"
