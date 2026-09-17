@@ -17,7 +17,7 @@ Marcador: `## Setup Roy`. Si ya está en `AGENTS.md`, no lo dupliques. Si no est
 
 ```markdown
 ## Setup Roy
-If the request may be covered by the pack under `docs/setup-roy/`, read `docs/setup-roy/agents.md` first and follow its index. Otherwise work normally.
+If the request may be covered by the pack under `docs/setup-roy/`, read `docs/setup-roy/agents.md` first and follow its index. If one mode piece clearly fits, offer it in a single line per `docs/setup-roy/workflows/offer-gate.md` before acting. Otherwise work normally.
 ```
 
 ---

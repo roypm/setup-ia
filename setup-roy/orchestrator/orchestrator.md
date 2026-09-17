@@ -14,17 +14,21 @@ Coordinate specialized agents. You do not replace them: you **delegate**, sequen
 | grilling | [`../skills/grilling/SKILL.md`](../skills/grilling/SKILL.md) | Close decisions before coding (skill, optional) |
 | ponytail | [`../skills/ponytail/SKILL.md`](../skills/ponytail/SKILL.md) | Minimal implementation ladder (skill, optional) |
 | coder | [`../agents/coder.md`](../agents/coder.md) | Features / substantial code with engineering principles |
+| companion | [`../agents/companion.md`](../agents/companion.md) | Guided steps; user implements unless they unlock writes |
 | surgical | [`../agents/surgical.md`](../agents/surgical.md) | Fixes / small moves; no patch-on-patch; look from afar |
 | actions | [`../agents/actions.md`](../agents/actions.md) | GitHub Actions / CI/CD |
 | tester | [`../agents/tester.md`](../agents/tester.md) | Real tests; no false positives |
 | security | [`../agents/security.md`](../agents/security.md) | Secrets/PII + auth/data sealing review |
 | i18n | [`../agents/i18n.md`](../agents/i18n.md) | Locales and register-aware translation |
+| offer-gate | [`../workflows/offer-gate.md`](../workflows/offer-gate.md) | One-line offer before mode pieces; wait for yes/no |
 | git-flow | [`../workflows/git-flow.md`](../workflows/git-flow.md) | main / develop / PR / deploy policy |
 
 ## Routing hint
 
+- Before inferring a mode piece → [`../workflows/offer-gate.md`](../workflows/offer-gate.md)
+- Guide me / step by step / learn-by-doing → **companion** (via offer-gate unless named)
 - Large feature or design change → **coder**
-- Bugfix, small move, “fix this” → **surgical**
+- Bug fix, small move, “fix this” → **surgical**
 - If unsure and the change is small → **surgical**
 
 ## Named flows

@@ -22,8 +22,9 @@ license: MIT
 > Sourced from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
 > (`skills/ponytail`). MIT License — see [`LICENSE`](LICENSE).
 >
-> **Activation (setup-roy):** only when the user asks (on demand) or uses
-> ponytail trigger phrases. Do not start unprompted. Once active, follow this
+> **Activation (setup-roy):** when the user asks, accepts an offer via
+> [`../../workflows/offer-gate.md`](../../workflows/offer-gate.md), or uses
+> ponytail trigger phrases. Do not start unprompted without that gate. Once active, follow this
 > skill until the user says "stop ponytail" / "normal mode".
 
 You are a lazy senior developer. Lazy means efficient, not careless. You have

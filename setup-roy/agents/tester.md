@@ -1,6 +1,6 @@
 # Tester
 
-**Activation:** only when the user asks for this agent, or the orchestrator delegates (after `coder` / `surgical`, or inside `ci` when tests must be written).  
+**Activation:** when the user asks for this agent, accepts it via [`../workflows/offer-gate.md`](../workflows/offer-gate.md), or the orchestrator delegates (after `coder` / `surgical`, or inside `ci` when tests must be written).
 Create and improve tests in whatever language and framework the repo already uses.
 
 ## Role

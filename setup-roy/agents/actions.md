@@ -1,6 +1,6 @@
 # Actions
 
-**Activation:** only when the user asks for this agent, or the orchestrator delegates (typically `ci`).  
+**Activation:** when the user asks for this agent, accepts it via [`../workflows/offer-gate.md`](../workflows/offer-gate.md), or the orchestrator delegates (typically `ci`).
 Expert for GitHub Actions workflows and CI/CD on GitHub.
 
 ## Role

@@ -1,10 +1,10 @@
 # Setup Roy
 
-Portable pack index for AI assistants. Activate skills, agents, and the orchestrator **only when the user asks** (or the orchestrator delegates).
+Portable pack index for AI assistants. Activate skills, agents, and the orchestrator when the user **asks**, **accepts an offer** ([`workflows/offer-gate.md`](workflows/offer-gate.md)), or the orchestrator **delegates**.
 
 ## When to use this pack
 
-If the request may be covered by a piece below, follow this index and open that file before acting. If it does not fit the pack, work normally — do not force a piece.
+If the request may be covered by a piece below, follow this index and open that file before acting. If an **offerable mode** piece clearly fits and the user did not name it, follow [`workflows/offer-gate.md`](workflows/offer-gate.md) first (one-line offer, then wait). If it does not fit the pack, work normally — do not force a piece.
 
 ## Index
 
@@ -13,20 +13,24 @@ If the request may be covered by a piece below, follow this index and open that 
 | [`skills/grilling/`](skills/grilling/SKILL.md) | Align on an idea/plan: interview until the decision tree is closed |
 | [`skills/ponytail/`](skills/ponytail/SKILL.md) | Lazy senior mode: minimal path via YAGNI ladder (lite/full/ultra) |
 | [`agents/coder.md`](agents/coder.md) | Write substantial code with engineering principles internalized |
+| [`agents/companion.md`](agents/companion.md) | Guided step-by-step coding; user implements unless they unlock writes |
 | [`agents/surgical.md`](agents/surgical.md) | Fix/move small changes: look from afar, no patch-on-patch |
 | [`agents/actions.md`](agents/actions.md) | Create or repair GitHub Actions / CI/CD |
 | [`agents/tester.md`](agents/tester.md) | Add real tests; reject false positives |
 | [`agents/security.md`](agents/security.md) | Secrets/PII leaks + auth/routes/DB sealing (perfectionist review) |
 | [`agents/i18n.md`](agents/i18n.md) | Locales and register-aware translation (when i18n applies) |
 | [`orchestrator/`](orchestrator/orchestrator.md) | Coordinate agents in a named multi-step flow |
+| [`workflows/offer-gate.md`](workflows/offer-gate.md) | One-line offer before entering a mode piece; wait for yes/no |
 | [`workflows/git-flow.md`](workflows/git-flow.md) | main / develop / PR / deploy-from-main policy |
 | [`EXTENDING.md`](EXTENDING.md) | Add new pieces to this pack without breaking the design |
 
 ## Routing
 
+- Before inferring a **mode** piece (companion, grilling, ponytail, security, tester, actions, i18n) → [`offer-gate`](workflows/offer-gate.md)
+- Guide me / step by step / “I want to do X” myself → **companion** (via offer-gate unless named)
 - Large feature or design change → **coder**
 - Bug fix, small move, “fix this” → **surgical**
-- Secrets, auth sealing, “harden” / security review → **security**
+- Secrets, auth sealing, “harden” / security review → **security** (via offer-gate unless named)
 - If unsure and the change is small → **surgical**
 - Multi-step work the user wants coordinated → **orchestrator**
 

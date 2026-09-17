@@ -34,4 +34,4 @@ tu-proyecto/
 
 ## Cómo se usa
 
-Cuando pides algo que cubre el pack, la IA entra por el `AGENTS.md` de la raíz. El snippet la redirige a `docs/setup-roy/agents.md` (índice en inglés): allí elige la pieza según la tarea. Si no encaja con el pack, trabaja con normalidad. El contenido base del pack está en inglés para las IAs; puedes añadir piezas nuevas en otro idioma si el índice queda claro.
+Cuando pides algo que cubre el pack, la IA entra por el `AGENTS.md` de la raíz. El snippet la redirige a `docs/setup-roy/agents.md` (índice en inglés). Si encaja una pieza de *modo*, ofrece usarla en una sola línea ([`offer-gate`](setup-roy/workflows/offer-gate.md)) y espera; si dices no, sigue sin ella. Si no encaja con el pack, trabaja con normalidad. El contenido base del pack está en inglés para las IAs; puedes añadir piezas nuevas en otro idioma si el índice queda claro.

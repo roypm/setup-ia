@@ -8,9 +8,9 @@ The index [`agents.md`](agents.md) is the source of truth: if it is not register
 
 ## Principles
 
-1. **On demand:** skills, agents, orchestrators, and similar activate only when the user asks (or the orchestrator delegates).
-2. **Stable router:** you do not need to change the project-root `AGENTS.md` snippet when adding pieces; evolve this pack and its index.
-3. **One piece, one place:** do not duplicate the same logic across skill + agent + workflow doc.
+1. **On demand or accepted offer:** skills, agents, orchestrators, and similar activate when the user asks, accepts an offer via [`workflows/offer-gate.md`](workflows/offer-gate.md), or the orchestrator delegates. Do not enter a mode piece silently.
+2. **Stable router:** you do not need to change the project-root `AGENTS.md` snippet when adding pieces; evolve this pack and its index. Changing the snippet is rare (router contract only — e.g. offer-gate).
+3. **One piece, one place:** do not duplicate the same logic across skill + agent + workflow doc. Offer UX lives only in `offer-gate.md`.
 4. **No secrets** in the pack (tokens, keys, passwords are resolved at runtime).
 
 ## Where things go
@@ -37,10 +37,11 @@ Regardless of piece type:
 
 1. Create it in the right folder (or propose a new one with a clear reason).
 2. Add an entry in [`agents.md`](agents.md): what it is, when to use it, path.
-3. State on-demand activation explicitly (except scripts the user/AI runs on purpose).
+3. State activation explicitly: user ask, offer-gate accept, and/or orchestrator delegate (except scripts the user/AI runs on purpose).
 4. If an orchestrator should be able to delegate to it, update `orchestrator/` (agent list / flow).
-5. Do not put secrets or meta-repo install files (`INSTALL.md`, `bootstrap.py`, etc.) into the pack.
-6. Do not change the project-root canonical snippet unless the **router contract** itself changes (rare).
+5. If the piece should be **offerable** as a mode (or must not be), update the table in [`workflows/offer-gate.md`](workflows/offer-gate.md).
+6. Do not put secrets or meta-repo install files (`INSTALL.md`, `bootstrap.py`, etc.) into the pack.
+7. Do not change the project-root canonical snippet unless the **router contract** itself changes (rare).
 
 ### Extra for scripts
 
