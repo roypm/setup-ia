@@ -12,7 +12,7 @@ After reading [`../agents.md`](../agents.md), before activating an offerable pie
 
 | Priority (high → low) | Piece | Offer when (signals) |
 |----------------------|--------|----------------------|
-| 1 | [`companion`](../agents/companion.md) | Guide me / step by step / learn-by-doing / “I want to do X” myself |
+| 1 | [`companion`](../agents/companion.md) | Guide me / step by step / learn-by-doing / “I want to do X” myself / guíame / no hagas nada / yo lo pego / no implementes |
 | 2 | [`grilling`](../skills/grilling/SKILL.md) | Open decision, ambiguous design, “help me decide”, stress-test a plan |
 | 3 | [`ponytail`](../skills/ponytail/SKILL.md) | Minimal / YAGNI / anti-overengineering / “do less” |
 | 4 | [`security`](../agents/security.md) | Harden, secrets/PII, auth/routes/DB sealing before prod |
