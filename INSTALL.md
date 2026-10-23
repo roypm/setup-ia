@@ -1,12 +1,12 @@
 # Instalar setup-roy
 
-Documento de instalación. **La vía principal es la IA**; la sección humana es un atajo opcional.
+Instalación **solo por IA**: este archivo es el contrato. No hay script en el meta-repo; la IA obtiene el pack y lo deja en el proyecto destino.
 
 ## Resultado esperado
 
 En la raíz del proyecto destino:
 
-1. Existe `docs/setup-roy/` (pack completo). Se crea `docs/` si no existía.
+1. Existe `docs/setup-roy/` con **todo el pack** o **solo las piezas que eligió el usuario** (siempre incluye `agents.md`).
 2. Existe `AGENTS.md` con el [snippet canónico](#snippet-canonico). Se crea el archivo si no existía; si ya tenía el snippet, no se duplica.
 
 ---
@@ -17,139 +17,81 @@ Marcador: `## Setup Roy`. Si ya está en `AGENTS.md`, no lo dupliques. Si no est
 
 ```markdown
 ## Setup Roy
-If the request may be covered by the pack under `docs/setup-roy/`, read `docs/setup-roy/agents.md` first and follow its index. If one mode piece clearly fits, offer it in a single line per `docs/setup-roy/workflows/offer-gate.md` before acting. Otherwise work normally.
+Optional pack in `docs/setup-roy/`. When the user or the task points there, read `docs/setup-roy/agents.md` and follow whatever piece fits under that tree. Otherwise work normally.
 ```
 
 ---
 
 ## Contrato para la IA
 
-Activa este contrato cuando el usuario pida instalar, configurar o añadir **setup-roy** (o este repo) al proyecto actual.
+Activa este contrato cuando el usuario pida instalar, configurar, actualizar o añadir **setup-roy** (o este repo) al proyecto actual.
+
+### Diálogo con el usuario (obligatorio salvo atajos)
+
+1. **Obtén el pack** primero (clone o ZIP; ver [Procedimiento](#procedimiento)) para saber qué hay en la versión actual.
+2. Si el usuario **ya dijo** “todo”, “completo”, “el pack entero” → instala **todo** `setup-roy/` sin más preguntas.
+3. Si el usuario **ya nombró piezas concretas** (p. ej. “solo companion y grilling”) → instala **solo esas**; confirma en una línea la lista y no hagas el menú completo.
+4. En cualquier otro caso, **pregunta una vez**:
+   - ¿Quieres **todo** el setup-roy, o **solo piezas concretas**?
+   - Si preguntas por “todo”, resume en la misma pregunta **nombres** de lo que incluye (una línea por pieza: nombre + para qué sirve). No hace falta un ensayo; basta que el usuario entienda el alcance.
+5. Si responde **todo** → copia el árbol completo de `setup-roy/`.
+6. Si responde **a medida** / piezas concretas → muestra una **lista numerada** de piezas instalables. En cada ítem: **nombre** (id estable, p. ej. `companion`, `coder`, `git-flow`) y **objetivo en una o dos frases** — qué problema resuelve o cuándo usarla.
+   - Texto del objetivo: léelo del pack, no lo inventes. Orden de preferencia:
+     - Skills: campo `description` del frontmatter de `skills/<id>/SKILL.md`.
+     - Agentes: primera frase útil bajo `## Role` o `## When to use` en `agents/<id>.md`.
+     - Workflows / orchestrator: título o primer párrafo del `.md`.
+   - Piezas a listar: cada carpeta directa bajo `skills/` que tenga `SKILL.md`; cada `agents/*.md` (no confundir con `agents.md` raíz); cada archivo en `workflows/`; `orchestrator/` si existe. No dupliques rutas anidadas basura (p. ej. no listes `skills/skills/...` como ítem aparte).
+7. El usuario elige por **números**, **ids** o **nombres** (p. ej. `1,3,5` o `companion, grilling`). Copia **solo** esas rutas más `agents.md` en la raíz del pack.
+8. Antes de cerrar, confirma qué quedó instalado (lista corta).
+
+Si `docs/setup-roy/` **ya existe**, pregunta antes de tocar: ¿añadir piezas, reinstalar todo (sustituir árbol), o cancelar?
 
 ### Reglas duras
 
 - Destino del pack: `docs/setup-roy/` en la raíz del proyecto actual.
-- Origen: **solo** el directorio `setup-roy/` de este repositorio.
-- **No** copies al proyecto los docs de la raíz de este meta-repo (`README.md`, `INSTALL.md`, `bootstrap.py`) ni nada fuera de `setup-roy/`.
+- Origen: **solo** el directorio `setup-roy/` del repositorio setup-ia.
+- **No** copies al proyecto `README.md`, `INSTALL.md` ni nada fuera de `setup-roy/`.
 - No inventes rutas distintas (`setup/`, `.cursor/`, etc.) salvo que el usuario lo pida explícitamente.
 - No hagas commit ni push como parte de la instalación salvo pedido explícito.
+- Modo **añadir piezas**: no borres lo ya instalado; solo copia las rutas nuevas que falten.
+- Modo **reinstalar todo**: sustituye el árbol entero por la copia nueva.
 
-### Procedimiento preferido
+### Procedimiento
 
 Desde la **raíz del proyecto destino**. URL canónica: `https://github.com/roypm/setup-ia` (salvo que el usuario indique otra).
 
-`bootstrap.py` no está en el proyecto destino: hay que obtenerlo (clone/zip temporal) y ejecutarlo desde la raíz del destino.
-
-**Con git** (Linux/macOS o Git Bash):
-
-```bash
-git clone --depth 1 https://github.com/roypm/setup-ia /tmp/setup-ia
-python3 /tmp/setup-ia/bootstrap.py --from /tmp/setup-ia
-rm -rf /tmp/setup-ia
-```
-
-**Sin git** (Linux/macOS, con `curl` + `unzip` + Python):
-
-```bash
-curl -fsSL -o /tmp/setup-ia.zip https://github.com/roypm/setup-ia/archive/refs/heads/main.zip
-unzip -q /tmp/setup-ia.zip -d /tmp
-python3 /tmp/setup-ia-main/bootstrap.py --from /tmp/setup-ia-main
-rm -rf /tmp/setup-ia.zip /tmp/setup-ia-main
-```
-
-**Con git** (Windows, PowerShell):
-
-```powershell
-git clone --depth 1 https://github.com/roypm/setup-ia $env:TEMP\setup-ia
-python $env:TEMP\setup-ia\bootstrap.py --from $env:TEMP\setup-ia
-Remove-Item -Recurse -Force $env:TEMP\setup-ia
-```
-
-**Sin git** (Windows, PowerShell + Python):
-
-```powershell
-Invoke-WebRequest -Uri https://github.com/roypm/setup-ia/archive/refs/heads/main.zip -OutFile $env:TEMP\setup-ia.zip
-Expand-Archive $env:TEMP\setup-ia.zip -DestinationPath $env:TEMP -Force
-python $env:TEMP\setup-ia-main\bootstrap.py --from $env:TEMP\setup-ia-main
-Remove-Item -Recurse -Force $env:TEMP\setup-ia.zip, $env:TEMP\setup-ia-main
-```
-
-El script copia solo `setup-roy/` → `docs/setup-roy/` y actualiza `AGENTS.md`. Si el pack ya existe: `--force`. Para simular: `--dry-run`.
-
-Si no puedes usar bootstrap (sin Python, sin red, etc.), haz el [fallback manual](#fallback-manual).
-
-### Fallback manual
-
-1. Obtén el contenido de `setup-roy/` desde el repo (clone temporal, descarga, o copia local).
-2. Crea `docs/` si no existe.
-3. Copia `setup-roy/` → `docs/setup-roy/`.
-4. En `AGENTS.md` de la raíz: si ya existe el marcador `## Setup Roy`, no lo toques; si no, crea el archivo o haz append con el [snippet canónico](#snippet-canonico).
-5. Borra temporales de descarga si los creaste.
+1. **Obtener el pack** (elige una vía; borra temporales al terminar):
+   - **Con git:** `git clone --depth 1 <url> /tmp/setup-ia` y usa `/tmp/setup-ia/setup-roy/`.
+   - **Sin git:** descarga el ZIP de `main`, extrae y usa la carpeta `setup-ia-main/setup-roy/` (o el nombre que traiga el archive).
+2. **Copiar** según la elección del usuario:
+   - **Todo:** crea `docs/` si no existe; copia el contenido de `setup-roy/` → `docs/setup-roy/`.
+   - **A medida:** crea `docs/setup-roy/` y `agents.md`; copia solo las carpetas/archivos elegidos manteniendo la misma estructura relativa (p. ej. `skills/companion/`, `agents/coder.md`, `workflows/git-flow.md`).
+3. **Cablear:** en `AGENTS.md` de la raíz, asegura el [snippet canónico](#snippet-canonico) una sola vez.
+4. **Verificar** con el checklist de abajo.
 
 ### Verificación (obligatoria)
 
-Confirma todo esto antes de dar la instalación por hecha:
-
-- [ ] Existe `docs/setup-roy/agents.md` (índice del pack; el detalle de piezas vive ahí)
-- [ ] `docs/setup-roy/` no está vacío y parece el pack (no solo un archivo suelto sin sentido)
-- [ ] `AGENTS.md` en la raíz contiene el marcador `## Setup Roy` una sola vez
-- [ ] No se copiaron al proyecto `README.md` / `INSTALL.md` / `bootstrap.py` de este meta-repo
+- [ ] Existe `docs/setup-roy/agents.md`
+- [ ] Cada pieza elegida está en su ruta bajo `docs/setup-roy/`
+- [ ] `AGENTS.md` en la raíz contiene el marcador `## Setup Roy` exactamente una vez
+- [ ] No se copiaron al proyecto `README.md` ni `INSTALL.md` del meta-repo
 
 ### Respuesta al usuario
 
-Resume en pocas líneas: rutas creadas/actualizadas, si el marcador era nuevo o ya estaba, y que el índice de uso es `docs/setup-roy/agents.md`.
+Resume en pocas líneas: todo vs a medida, piezas instaladas, rutas tocadas, si el marcador era nuevo, y que el contexto del pack está en `docs/setup-roy/agents.md`.
 
 ---
 
-## Opción humana
+## Atajo humano (sin IA)
 
-Misma meta que el contrato IA. Ejecuta los comandos desde la **raíz de tu proyecto**. Hace falta **Python 3** para `bootstrap.py`.
-
-### Linux / macOS — con git
-
-```bash
-git clone --depth 1 https://github.com/roypm/setup-ia /tmp/setup-ia
-python3 /tmp/setup-ia/bootstrap.py --from /tmp/setup-ia
-rm -rf /tmp/setup-ia
-```
-
-### Linux / macOS — sin git
-
-```bash
-curl -fsSL -o /tmp/setup-ia.zip https://github.com/roypm/setup-ia/archive/refs/heads/main.zip
-unzip -q /tmp/setup-ia.zip -d /tmp
-python3 /tmp/setup-ia-main/bootstrap.py --from /tmp/setup-ia-main
-rm -rf /tmp/setup-ia.zip /tmp/setup-ia-main
-```
-
-### Windows — con git (PowerShell)
-
-```powershell
-git clone --depth 1 https://github.com/roypm/setup-ia $env:TEMP\setup-ia
-python $env:TEMP\setup-ia\bootstrap.py --from $env:TEMP\setup-ia
-Remove-Item -Recurse -Force $env:TEMP\setup-ia
-```
-
-### Windows — sin git (PowerShell)
-
-```powershell
-Invoke-WebRequest -Uri https://github.com/roypm/setup-ia/archive/refs/heads/main.zip -OutFile $env:TEMP\setup-ia.zip
-Expand-Archive $env:TEMP\setup-ia.zip -DestinationPath $env:TEMP -Force
-python $env:TEMP\setup-ia-main\bootstrap.py --from $env:TEMP\setup-ia-main
-Remove-Item -Recurse -Force $env:TEMP\setup-ia.zip, $env:TEMP\setup-ia-main
-```
-
-### Sin Python (cualquier SO)
-
-1. Descarga el ZIP del repo: https://github.com/roypm/setup-ia/archive/refs/heads/main.zip  
-   (o clona el repo si tienes git).
-2. Copia la carpeta `setup-roy/` a `docs/setup-roy/` en tu proyecto (crea `docs/` si hace falta).
-3. En la raíz, crea o edita `AGENTS.md` y pega el marcador y el [snippet canónico](#snippet-canonico) (sin duplicar nada).
-4. Comprueba que existe `docs/setup-roy/agents.md`.
-5. Borra el ZIP / clone temporal.
+1. Descarga o clona https://github.com/roypm/setup-ia y localiza la carpeta `setup-roy/`.
+2. Crea `docs/` en tu proyecto si no existe.
+3. Copia todo `setup-roy/` → `docs/setup-roy/`, o solo las carpetas/archivos que quieras (misma estructura).
+4. En la raíz, crea o edita `AGENTS.md` y pega el [snippet canónico](#snippet-canonico) si falta el marcador `## Setup Roy`.
+5. Comprueba que existe `docs/setup-roy/agents.md`.
 
 ---
 
 ## Después de instalar
 
-El índice y la lógica de piezas están en `docs/setup-roy/agents.md`. No hace falta releer este archivo para usar el pack.
+Contexto del pack en `docs/setup-roy/agents.md`; el detalle vive en los archivos bajo ese árbol. No hace falta releer este `INSTALL.md` para usar el pack.

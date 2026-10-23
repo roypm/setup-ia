@@ -1,20 +1,7 @@
 ---
 name: grilling
-description: >-
-  Grill the user relentlessly about a plan, decision, or idea. Use when the
-  user asks to grill / stress-test thinking, uses grill trigger phrases, or
-  accepts a setup-roy offer-gate offer for grilling.
-  Do not start grilling unprompted.
+description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
 ---
-
-# Grilling
-
-> Sourced from [mattpocock/skills](https://github.com/mattpocock/skills)
-> (`skills/productivity/grilling`). MIT License — see [`LICENSE`](LICENSE).
->
-> **Activation (setup-roy):** when the user asks, accepts an offer via
-> [`../../workflows/offer-gate.md`](../../workflows/offer-gate.md), or uses
-> grill trigger phrases. Do not start grilling unprompted without that gate.
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
 
@@ -33,6 +20,8 @@ Format a round like so:
 
 ➡️ <your recommended answer>
 ```
+
+Word each question so "yes" accepts your recommended answer.
 
 Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
 
