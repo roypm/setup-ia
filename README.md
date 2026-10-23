@@ -11,10 +11,18 @@ Lo que viaja a tus repos es solo la carpeta **`setup-roy/`**. El resto de este r
 | [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills y agentes |
 | [`INSTALL.md`](INSTALL.md) | No | Contrato de instalación (IA) |
 
-La instalación es **solo por IA**: no hay script. En el proyecto donde quieras el pack, abre el chat del agente y pega:
+La instalación es **solo por IA**: no hay script. En el proyecto donde quieras el pack, abre el chat del agente y pega uno de estos mensajes:
+
+**Menú guiado** (todo o piezas; el catálogo detallado solo si eliges a medida):
 
 ```text
 Instala setup-roy en este proyecto. Sigue https://github.com/roypm/setup-ia/blob/main/INSTALL.md (pregunta si quieres todo o piezas; si es a medida, lista cada herramienta con su objetivo).
+```
+
+**Atajo** (sin menú; instala directo lo que nombres):
+
+```text
+Instala setup-roy en este proyecto siguiendo https://github.com/roypm/setup-ia/blob/main/INSTALL.md — solo sdd, ftd y el agente coder.
 ```
 
 Contrato detallado: **[INSTALL.md](INSTALL.md)**.

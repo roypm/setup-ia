@@ -28,21 +28,39 @@ Activa este contrato cuando el usuario pida instalar, configurar, actualizar o a
 
 ### Diálogo con el usuario (obligatorio salvo atajos)
 
+**Idioma:** habla con el usuario en su idioma. Los archivos que copies del pack **no** los traduzcas (el pack va en inglés para las IAs).
+
+**Tono:** evita narrar pasos internos (“clonando…”, “consultando…”). Un resumen breve del inventario actual basta (p. ej. cuántos skills y agentes hay en esta versión).
+
+**Interpretación flexible** (equivale a lo que dice el usuario):
+
+| Intención | Acepta también (ejemplos) |
+|-----------|---------------------------|
+| **Todo** el pack | `completo`, `entero`, `full`, `all`, `todo el setup-roy` |
+| **A medida** / piezas | `a media` (typo), `parcial`, `custom`, `solo algunas`, `piezas concretas` |
+| **Atajo con piezas** | En el primer mensaje ya nombra ids o nombres (`solo sdd, ftd y coder`) |
+
 1. **Obtén el pack** primero (clone o ZIP; ver [Procedimiento](#procedimiento)) para saber qué hay en la versión actual.
-2. Si el usuario **ya dijo** “todo”, “completo”, “el pack entero” → instala **todo** `setup-roy/` sin más preguntas.
-3. Si el usuario **ya nombró piezas concretas** (p. ej. “solo companion y grilling”) → instala **solo esas**; confirma en una línea la lista y no hagas el menú completo.
-4. En cualquier otro caso, **pregunta una vez**:
+2. Si el usuario **ya pidió todo** (tabla anterior) → instala **todo** `setup-roy/` sin menú; opcional: una línea con el recuento (N skills, M agentes, workflows si hay).
+3. Si el usuario **ya nombró piezas concretas** → instala **solo esas**; confirma en una línea la lista y **no** muestres el menú numerado.
+4. En cualquier otro caso, **pregunta una sola vez**, sin catálogo detallado:
    - ¿Quieres **todo** el setup-roy, o **solo piezas concretas**?
-   - Si preguntas por “todo”, resume en la misma pregunta **nombres** de lo que incluye (una línea por pieza: nombre + para qué sirve). No hace falta un ensayo; basta que el usuario entienda el alcance.
-5. Si responde **todo** → copia el árbol completo de `setup-roy/`.
-6. Si responde **a medida** / piezas concretas → muestra una **lista numerada** de piezas instalables. En cada ítem: **nombre** (id estable, p. ej. `companion`, `coder`, `git-flow`) y **objetivo en una o dos frases** — qué problema resuelve o cuándo usarla.
-   - Texto del objetivo: léelo del pack, no lo inventes. Orden de preferencia:
+   - Añade **una línea** de contexto: el pack son skills, agentes y (si existen) workflows bajo `docs/setup-roy/`; en esta versión hay *N* skills y *M* agentes (y workflows/orchestrator solo si aplican). **No** listes cada pieza ni objetivos en este turno.
+5. Si responde **todo** → copia el árbol completo de `setup-roy/`. No hace falta volcar el catálogo antes de copiar.
+6. Si responde **a medida** / piezas concretas → muestra **una sola vez** la **lista numerada** de piezas instalables (no repitas el mismo menú en turnos posteriores salvo que el usuario lo pida). En cada ítem: **nombre** (id estable, p. ej. `companion`, `coder`) y **objetivo en una o dos frases**.
+   - **Orden del menú** (los números dependen de este orden en la sesión):
+     1. Skills: carpetas bajo `skills/` con `SKILL.md`, ordenadas por **id de carpeta A→Z**.
+     2. Agentes: archivos `agents/*.md` (excluye `agents.md` raíz del pack), ordenados por **nombre de archivo A→Z**.
+     3. Workflows: archivos en `workflows/`, A→Z por nombre de archivo.
+     4. `orchestrator/` como ítem aparte solo si existe.
+   - Indica al usuario que puede responder con **ids** o **nombres** (p. ej. `sdd, ftd, coder`) o con **números** de ese menú (p. ej. `7, 4, 11` si en esta sesión sdd es el 7, ftd el 4 y coder el 11).
+   - Texto del objetivo: léelo del pack; resume en el idioma del usuario si hace falta, sin inventar. Orden de preferencia:
      - Skills: campo `description` del frontmatter de `skills/<id>/SKILL.md`.
      - Agentes: primera frase útil bajo `## Role` o `## When to use` en `agents/<id>.md`.
      - Workflows / orchestrator: título o primer párrafo del `.md`.
-   - Piezas a listar: cada carpeta directa bajo `skills/` que tenga `SKILL.md`; cada `agents/*.md` (no confundir con `agents.md` raíz); cada archivo en `workflows/`; `orchestrator/` si existe. No dupliques rutas anidadas basura (p. ej. no listes `skills/skills/...` como ítem aparte).
-7. El usuario elige por **números**, **ids** o **nombres** (p. ej. `1,3,5` o `companion, grilling`). Copia **solo** esas rutas más `agents.md` en la raíz del pack.
-8. Antes de cerrar, confirma qué quedó instalado (lista corta).
+   - No dupliques rutas anidadas basura (p. ej. no listes `skills/skills/...` como ítem aparte).
+7. Tras la elección en modo a medida → copia **solo** las rutas elegidas más `agents.md` en la raíz del pack.
+8. Antes de cerrar, confirma qué quedó instalado (lista corta con rutas).
 
 Si `docs/setup-roy/` **ya existe**, pregunta antes de tocar: ¿añadir piezas, reinstalar todo (sustituir árbol), o cancelar?
 
@@ -78,7 +96,9 @@ Desde la **raíz del proyecto destino**. URL canónica: `https://github.com/royp
 
 ### Respuesta al usuario
 
-Resume en pocas líneas: todo vs a medida, piezas instaladas, rutas tocadas, si el marcador era nuevo, y que el contexto del pack está en `docs/setup-roy/agents.md`.
+Resume en pocas líneas: todo vs a medida, piezas instaladas, rutas tocadas, checklist de [verificación](#verificación-obligatoria), y que el contexto del pack está en `docs/setup-roy/agents.md`.
+
+Si acabas de **crear** `AGENTS.md` o de **añadir** el marcador `## Setup Roy`, incluye el [snippet canónico](#snippet-canonico) literal en la respuesta para que el usuario pueda comprobarlo.
 
 ---
 
