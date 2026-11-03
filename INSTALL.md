@@ -50,13 +50,13 @@ Activa este contrato cuando el usuario pida instalar, configurar, actualizar o a
 6. Si responde **a medida** / piezas concretas → muestra **una sola vez** la **lista numerada** de piezas instalables (no repitas el mismo menú en turnos posteriores salvo que el usuario lo pida). En cada ítem: **nombre** (id estable, p. ej. `companion`, `coder`) y **objetivo en una o dos frases**.
    - **Orden del menú** (los números dependen de este orden en la sesión):
      1. Skills: carpetas bajo `skills/` con `SKILL.md`, ordenadas por **id de carpeta A→Z**.
-     2. Agentes: archivos `agents/*.md` (excluye `agents.md` raíz del pack), ordenados por **nombre de archivo A→Z**.
+     2. Agentes: carpetas `agents/<id>/` que contienen `agent.md`, ordenadas por **id A→Z** (excluye `agents.md` raíz del pack).
      3. Workflows: archivos en `workflows/`, A→Z por nombre de archivo.
      4. `orchestrator/` como ítem aparte solo si existe.
    - Indica al usuario que puede responder con **ids** o **nombres** (p. ej. `sdd, ftd, coder`) o con **números** de ese menú (p. ej. `7, 4, 11` si en esta sesión sdd es el 7, ftd el 4 y coder el 11).
    - Texto del objetivo: léelo del pack; resume en el idioma del usuario si hace falta, sin inventar. Orden de preferencia:
      - Skills: campo `description` del frontmatter de `skills/<id>/SKILL.md`.
-     - Agentes: primera frase útil bajo `## Role` o `## When to use` en `agents/<id>.md`.
+     - Agentes: primera frase útil bajo `## Role` o `## When to use` en `agents/<id>/agent.md`.
      - Workflows / orchestrator: título o primer párrafo del `.md`.
    - No dupliques rutas anidadas basura (p. ej. no listes `skills/skills/...` como ítem aparte).
 7. Tras la elección en modo a medida → copia **solo** las rutas elegidas más `agents.md` en la raíz del pack.
@@ -83,7 +83,7 @@ Desde la **raíz del proyecto destino**. URL canónica: `https://github.com/royp
    - **Sin git:** descarga el ZIP de `main`, extrae y usa la carpeta `setup-ia-main/setup-roy/` (o el nombre que traiga el archive).
 2. **Copiar** según la elección del usuario:
    - **Todo:** crea `docs/` si no existe; copia el contenido de `setup-roy/` → `docs/setup-roy/`.
-   - **A medida:** crea `docs/setup-roy/` y `agents.md`; copia solo las carpetas/archivos elegidos manteniendo la misma estructura relativa (p. ej. `skills/companion/`, `agents/coder.md`, `workflows/git-flow.md`).
+   - **A medida:** crea `docs/setup-roy/` y `agents.md`; copia solo las carpetas/archivos elegidos manteniendo la misma estructura relativa (p. ej. `skills/companion/`, `agents/coder/`, `workflows/git-flow.md`).
 3. **Cablear:** en `AGENTS.md` de la raíz, asegura el [snippet canónico](#snippet-canonico) una sola vez.
 4. **Verificar** con el checklist de abajo.
 
