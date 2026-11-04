@@ -24,7 +24,7 @@ Deliver one clearly scoped product change in this project through a specificatio
 4. **`pausas` decisions** — Write no code until the user answers the numbered decision questions. Then continue in the same thread; pause again only if cross-check reveals a new decision only the user can make.
 5. **Keep scope local** — Avoid project-wide rules or configuration unless asked. Update existing docs when the change makes them inaccurate; do not create docs when none are relevant.
 6. **Complete the change** — Use the phases to guide the work; do not stop after producing the specification or plan when implementation is expected.
-7. **Checks** — Skip tests by default. Run them only if requested or a quick check is necessary; report results accurately.
+7. **Checks** — In **Converge**, run the project’s usual verify commands when documented (scripts, Makefile, CI config, or repo docs). Prefer targeted checks on changed areas when the full suite is slow or huge. Fix failures or report what blocks closure. If nothing verifiable ran, say so explicitly — do not imply green without evidence.
 8. **Respect Git boundaries** — Do not commit or push unless explicitly asked.
 
 ## Pipeline (always, in order)
@@ -42,7 +42,7 @@ The phase names align with Spec Kit ideas. Do not require `/speckit-*` commands 
 | 5 | **Tasks** (`tasks`) | Break the plan into concrete, ordered tasks. Each task should advance a brief requirement and have a clear completion check; omit filler tasks. |
 | 6 | **Cross-check** (`analyze`) | Check that the brief, plan, and tasks agree. In `auto`, resolve inconsistencies and proceed. In `pausas`, pause only if the conflict requires a decision only the user can make; otherwise resolve it and continue. |
 | 7 | **Implement** (`implement`) | Complete the tasks using the project’s conventions. |
-| 8 | **Converge** (`converge`) | Check the result against the brief and tasks, report checks run, and note any configuration or secrets the user must provide. In `auto`, briefly list important assumptions. |
+| 8 | **Converge** (`converge`) | Check the result against the brief and tasks; run verification per hard rule 7; report what ran and outcomes. Note any configuration or secrets the user must provide. In `auto`, briefly list important assumptions. |
 
 ### When to pause (`pausas` only)
 
@@ -73,7 +73,3 @@ Reply with a number or a short phrase. Implementation is paused until you answer
 1. **<title>:** …
    → Recommended: …
 ```
-
-## If Spec Kit files exist
-
-Update `spec.md`, `plan.md`, or `tasks.md` in the project’s Spec Kit layout only when that is already the team workflow. Otherwise, keep the brief in the chat or at a path the user named. Do not run `specify init` unless asked.
