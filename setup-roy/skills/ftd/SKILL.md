@@ -1,36 +1,38 @@
 ---
 name: ftd
 description: >
-  Fast Track Development: implement one clearly scoped feature or
-  product change in the current repo with a lightweight workflow. Understand
-  the existing code, define the outcome briefly, plan the implementation,
-  make the change, and summarize what was done and checked. Use when the user
-  asks for FTD, fast-track development, or lightweight implementation.
+  Fast Track Development: implements one clearly scoped feature or product
+  change in the current repo through a lightweight pipeline—Anchor, Specify,
+  Plan, Tasks, Implement, Converge. End-to-end with optional checks unless
+  requested. Use when the user asks for FTD, fast-track development, or
+  lightweight implementation.
 ---
 
 # FTD — Fast Track Development
 
-Implement one clearly scoped feature or product change with a lightweight, end-to-end workflow. Understand the relevant code, define the outcome briefly, plan and implement the change, then summarize what was done and checked. Treat each request as a separate task and stop when it is complete.
+Deliver one clearly scoped change through the pipeline below: ground the work in the repo, specify the outcome, plan and break down tasks, implement, then converge. Treat each request as a separate task and stop when it is complete.
 
 ## Hard rules
 
-1. **Start with the repo** — Read the relevant files and follow the project’s existing patterns.
+1. **Anchor first** — Read relevant project context (`AGENTS.md`, docs, nearby code) and follow existing patterns.
 2. **Keep moving** — If missing information blocks part of the work, state what is missing and continue with the parts that do not depend on it. If nothing can be done safely, stop and ask for that information.
 3. **Keep scope local** — Avoid project-wide rules or configuration unless asked. Update existing docs when the change makes them inaccurate; don’t create docs when none are relevant.
-4. **Complete the change** — Use the brief and plan to guide implementation; do not stop after writing them.
+4. **Complete the change** — Use **Specify**, **Plan**, and **Tasks** to guide **Implement**; do not stop after planning alone.
 5. **Checks** — Skip tests by default. Run them only if requested or a quick check is necessary; report results accurately.
 6. **Respect Git boundaries** — Do not commit or push unless explicitly asked.
 
-## Pipeline (in order)
+## Pipeline (always, in order)
 
-| Step | Name | Do |
-|------|------|-----|
-| 0 | **Repo anchor** | Analyze the request and relevant code; identify the goal, constraints, project patterns, and risks. |
-| 1 | **Brief** (`specify`) | Summarize what will change, what is out of scope, and how to tell when it is done. |
-| 2 | **Technical Plan** (`plan`) | Decide where and how to make the change in this codebase. |
-| 3 | **Tasks** (`tasks`) | Break the plan into concrete, ordered tasks. Each task should advance a brief requirement and have a clear completion check; omit filler tasks. |
-| 4 | **Implement** (`implement`) | Apply the changes. |
-| 5 | **Converge** (`converge`) | Check whether the brief was met, report checks run, and state any assumptions briefly. |
+Run the phases below in order for each request. Step **0** re-anchors repo context and governing principles for that change. Scale **Plan** and **Tasks** to the size of the change.
+
+| Step | Name | Goal | Do |
+|------|------|------|-----|
+| 0 | **Anchor** | Ground this change in the repo and the rules later steps must honor. | Read `AGENTS.md`, docs, and nearby code; note constraints, patterns, risks, and non-negotiables (security, architecture, quality). State any principles the user gave for this task that are not already in project docs. |
+| 1 | **Specify** | Turn the request into a clear spec: what to build and why—not stack or implementation. | Define problem, outcome, acceptance criteria, scope, and out-of-scope in product language; keep it concise; defer tech choices to **Plan**. Record assumptions you proceed on when something is underspecified. |
+| 2 | **Plan** | Translate the spec into a technical design: stack, architecture, and how the change lands in the codebase. | Choose how and where to implement (modules, files, data, dependencies) in this repo. |
+| 3 | **Tasks** | Produce dependency-ordered, actionable work items from the plan and spec. | Break the plan into concrete ordered tasks; each advances a spec requirement with a clear done check; omit filler. |
+| 4 | **Implement** | Execute tasks in order and build the change per the plan. | Complete tasks using project conventions. |
+| 5 | **Converge** | Verify the change matches the spec and tasks; close the loop on this request. | Compare outcome to **Specify** and **Tasks**; state assumptions and anything still missing. Run checks only per hard rule 5; report what ran accurately (including when none ran). |
 
 ## Response shape (optional, keep short)
 
@@ -41,5 +43,3 @@ Implement one clearly scoped feature or product change with a lightweight, end-t
 ---
 (implementation + verification note)
 ```
-
-Scale the plan and tasks to the size of the change without adding unnecessary phases.

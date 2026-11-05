@@ -29,20 +29,20 @@ Deliver one clearly scoped product change in this project through a specificatio
 
 ## Pipeline (always, in order)
 
-The phase names align with Spec Kit ideas. Do not require `/speckit-*` commands or `.specify/` unless the project already uses them.
+Run the phases below in order for each request. Step **0** re-anchors repo context and governing principles for that change (not a separate one-time setup).
 
-| Step | Name | Do |
-|------|------|-----|
-| 0 | **Repo anchor** | Analyze the request and relevant project context; identify the goal, constraints, patterns, and risks. |
-| 1 | **Brief** (`specify`) | Define the problem, desired outcome, acceptance criteria, and scope. Keep it in product language; defer stack details to step 3. |
-| 2 | **Clarify** (`clarify`) | Surface gaps, edge cases, and assumptions. In `pausas`, identify decisions only the user can make. |
-| — | **Pause 1** | In `pausas`, if the user must decide a product behavior, provide credentials, or accept an irreversible tradeoff, list numbered **Decisions**, each with a recommendation, then stop without writing code. Otherwise continue. |
-| 3 | **Technical Plan** (`plan`) | Decide how and where to implement the change in this codebase, including relevant modules, files, data, and dependencies. |
-| 4 | **Requirements Review** (`checklist`) | Check that the brief is complete and implementable without guessing; resolve gaps before creating tasks. |
-| 5 | **Tasks** (`tasks`) | Break the plan into concrete, ordered tasks. Each task should advance a brief requirement and have a clear completion check; omit filler tasks. |
-| 6 | **Cross-check** (`analyze`) | Check that the brief, plan, and tasks agree. In `auto`, resolve inconsistencies and proceed. In `pausas`, pause only if the conflict requires a decision only the user can make; otherwise resolve it and continue. |
-| 7 | **Implement** (`implement`) | Complete the tasks using the project’s conventions. |
-| 8 | **Converge** (`converge`) | Check the result against the brief and tasks; run verification per hard rule 7; report what ran and outcomes. Note any configuration or secrets the user must provide. In `auto`, briefly list important assumptions. |
+| Step | Name | Goal | Do |
+|------|------|------|-----|
+| 0 | **Anchor** | Ground this change in the repo and the rules later steps must honor. | Read `AGENTS.md`, docs, and nearby code; note constraints, patterns, risks, and non-negotiables (security, architecture, quality). State any principles the user gave for this task that are not already in project docs. |
+| 1 | **Specify** | Turn the request into a clear spec: what to build and why—not stack or implementation. | Define the problem, desired outcome, acceptance criteria, and scope in product language; defer tech choices to **Plan**. |
+| 2 | **Clarify** | Close gaps and ambiguities in the spec before planning on assumptions. | Surface edge cases and assumptions; in `pausas`, list decisions only the user can make. |
+| — | **Pause 1** | *(Skill gate.)* | In `pausas`, if the user must decide product behavior, provide credentials, or accept an irreversible tradeoff, list numbered **Decisions** with recommendations, then stop without code. Otherwise continue. |
+| 3 | **Plan** | Translate the spec into a technical design: stack, architecture, and how the change lands in the codebase. | Choose how and where to implement (modules, files, data, dependencies) in this repo. |
+| 4 | **Checklist** | Validate spec quality—complete, clear, consistent—before breaking work down. | Confirm the spec is implementable without guessing; resolve gaps before **Tasks**. |
+| 5 | **Tasks** | Produce dependency-ordered, actionable work items from the plan and spec. | Break the plan into concrete ordered tasks; each advances a spec requirement with a clear done check; omit filler. |
+| 6 | **Analyze** | Read-only cross-check of spec, plan, and tasks for conflicts, gaps, and drift. | Ensure the three artifacts agree; fix at the source and re-check. In `auto`, resolve fixable inconsistencies and proceed. In `pausas`, pause only if resolution needs a user-only decision. |
+| 7 | **Implement** | Execute tasks in order and build the change per the plan. | Complete tasks using project conventions; if the requirements checklist from **Checklist** is still open, stop and ask before coding. |
+| 8 | **Converge** | Verify the codebase matches spec, plan, and tasks until nothing material is left open. | Compare outcome to spec and tasks; run verification per hard rule 7; report what ran. If gaps remain, add tasks and repeat **Implement** → **Converge**. In `auto`, list important assumptions; note config or secrets the user must supply. |
 
 ### When to pause (`pausas` only)
 
