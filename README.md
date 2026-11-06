@@ -8,7 +8,7 @@ Lo que viaja a tus repos es solo la carpeta **`setup-roy/`**. El resto de este r
 
 | Ruta | ¿Se copia al proyecto? | Para qué |
 |------|------------------------|----------|
-| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Skills y agentes |
+| [`setup-roy/`](setup-roy/) | **Sí** → `docs/setup-roy/` | Recursos reutilizables para trabajar con IA |
 | [`INSTALL.md`](INSTALL.md) | No | Contrato de instalación (IA) |
 
 La instalación y la actualización son **solo por IA** (no hay script). En la raíz del proyecto, abre el chat y pega:
@@ -27,8 +27,8 @@ Actualiza setup-roy en este proyecto según https://github.com/roypm/setup-ia/bl
 
 Qué te preguntará la IA: **[instalar](INSTALL.md#qué-verás-en-el-chat)** · **[actualizar](INSTALL.md#qué-verás-al-actualizar)**. Contrato completo: **[INSTALL.md](INSTALL.md)**.
 
-En el proyecto destino quedan `AGENTS.md` (snippet) y `docs/setup-roy/` con el pack; el contenido concreto de cada versión lo describe `docs/setup-roy/agents.md` tras instalar.
+En el proyecto destino quedan un enlace en `AGENTS.md`, los recursos elegidos en `docs/setup-roy/` y un registro local de instalación. El registro conserva el origen, la selección y los archivos gestionados para actualizar sin ampliar una instalación parcial ni borrar archivos propios.
 
 ## Cómo se usa
 
-Cuando el trabajo encaja con el pack, la IA lee `docs/setup-roy/agents.md` y abre la pieza que toque bajo ese árbol. Si no encaja, ignora el pack. El contenido base del pack está en inglés para las IAs.
+Cuando el trabajo encaja con el objetivo del pack o nombras un recurso, la IA explora lo que está instalado y sigue las instrucciones pertinentes. El contenido disponible se descubre del propio árbol, sin catálogo fijo ni categorías obligatorias. El contenido base del pack está en inglés para las IAs.
