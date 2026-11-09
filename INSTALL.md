@@ -151,7 +151,7 @@ Si el usuario ya describió el plan completo (conjuntos + tratamiento de actuali
 - **Solo añadir en mi alcance** nunca amplía el catálogo (bloque B) ni sobrescribe.
 - **Añadir del catálogo** nunca sobrescribe archivos existentes; siempre amplía selección registrada.
 - **Integrar alcance** no añade unidades del bloque B salvo que el paso 1 incluya también añadir del catálogo o mix.
-- Cualquier copia de unidades del bloque B actualiza `selection.paths`, `dependencies` y `managed_files` coherently.
+- Cualquier copia de unidades del bloque B actualiza `selection.paths`, `dependencies` y `managed_files` de forma coherente.
 - Actualiza `source.revision` solo tras operaciones completadas con éxito.
 
 Una dependencia que deje de necesitarse se trata como retirada solo si ninguna selección conservada la requiere. Si en una operación limitada otra pieza instalada todavía necesita el archivo, consérvalo. Los bloqueos de tipo archivo/carpeta o enlaces deben resolverse antes de sobrescribir; no borres contenido desconocido para forzar una copia.
