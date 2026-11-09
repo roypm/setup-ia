@@ -27,7 +27,7 @@ Actualiza setup-roy en este proyecto según https://github.com/roypm/setup-ia/bl
 
 Qué te preguntará la IA: **[instalar](INSTALL.md#qué-verás-en-el-chat)** · **[actualizar](INSTALL.md#qué-verás-al-actualizar)**. Contrato completo: **[INSTALL.md](INSTALL.md)**.
 
-En el proyecto destino quedan un enlace en `AGENTS.md`, los recursos elegidos en `docs/setup-roy/` y un registro local de instalación. El registro conserva el origen, la selección y los archivos gestionados para actualizar sin ampliar una instalación parcial ni borrar archivos propios.
+En el proyecto destino quedan un enlace en `AGENTS.md`, los recursos elegidos en `docs/setup-roy/` y un registro local de instalación. El registro conserva el origen, la selección y los archivos gestionados. Al actualizar, la IA distingue tu **alcance registrado** de piezas del pack **sin instalar** y pregunta en dos pasos salvo que uses atajos como «Actualiza setup-roy integrando», «Solo añadir en mi alcance» o «Añade del pack lo que no tengo».
 
 ## Cómo se usa
 

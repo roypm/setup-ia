@@ -10,14 +10,30 @@ Al terminar muestra las rutas instaladas y el resultado de la verificación. Si 
 
 ## Qué verás al actualizar
 
-La IA compara la instalación con el origen y muestra lo nuevo, lo distinto y lo que ya no publica el pack, dentro del alcance instalado. Después pregunta una vez por el modo, salvo que ya lo hayas indicado:
+La IA lee el registro, toma una instantánea del origen y muestra un **informe en dos bloques** (sin copiar hasta que elijas, salvo que ya hayas indicado el plan completo):
 
-- **Integrar:** añade y sobrescribe desde el origen, conservando archivos que solo existen localmente. Advierte que las ediciones locales de archivos sobrescritos se pierden.
-- **Reinstalar:** restaura los archivos del pack dentro del alcance; puede eliminar archivos gestionados que ya no publica el origen. Informa de los borrados antes de ejecutarlos.
-- **Solo añadir:** copia únicamente rutas ausentes, conservando el contenido existente.
-- **Cancelar:** termina sin modificar la instalación.
+**A — Dentro de tu alcance registrado** (lo que promete `selection` y dependencias): al día, actualizable, hueco en disco, retirado del pack, solo local.
 
-Puedes evitar preguntas indicando «Instala todo setup-roy», «Actualiza setup-roy integrando» o «Solo añade lo nuevo». Una actualización parcial conserva la selección anterior; una instalación completa incorpora también los nuevos recursos del pack.
+**B — En el pack upstream, no en tu proyecto:** piezas **sin instalar** (están en remoto, no en disco y no constan en tu selección) y, aparte, **nuevo en el pack para este proyecto** (unidad que el origen publica ahora y que no figura en `managed_files` ni en `selection.paths` / `dependencies`; se clasifica con el registro y el árbol, sin comparar historial de revisiones del meta-repositorio).
+
+Tras el informe, **dos pasos** salvo que lo resuelvas en una sola frase:
+
+1. **Qué conjuntos tocar:** reparar huecos, actualizar lo distinto del bloque A, añadir del catálogo (bloque B: sin instalar y/o nuevo en el pack), alinear en disco todo el pack upstream (opcional, sin cambiar `mode` a `all` por defecto), reinstalar solo el alcance registrado, o cancelar.
+2. **Solo si vas a tocar lo actualizable:** conservar tus archivos locales o tomar el contenido del origen (sobrescribir; aviso de pérdida de ediciones). Variante fuerte: sobrescribir **todo** lo gestionado desde el origen aunque la selección siga en `partial`.
+
+Atajos que evitan el menú cuando son inequívocos:
+
+- **Integrar alcance** — huecos + nuevos archivos dentro del alcance + actualizables tomando origen; no añade unidades del catálogo (bloque B).
+- **Solo añadir en mi alcance** — ausentes **solo** dentro del alcance; sin sobrescribir; **no** incluye piezas del catálogo que nunca instalaste.
+- **Añadir del catálogo** / **añade del pack lo que no tengo** — copia unidades del bloque B que indiques (o un menú), sin sobrescribir lo existente; amplía `selection.paths`.
+- **Mix** — combina lo que pidas (p. ej. actualizar instalado + añadir del catálogo); en un mensaje puedes decir «mix: integra lo distinto y añade ponyskill X».
+- **Sincronizar pack en disco** — copia todo lo que falte del upstream y, si lo pides, alinea lo gestionado; no pasa a `mode: all` salvo petición explícita de mantener el pack entero a futuro.
+- **Reinstalar alcance** — copia limpia dentro del alcance registrado; puede borrar gestionados retirados del origen (con lista previa).
+- **Cancelar** — sin cambios.
+
+Frases ambiguas como «solo añade lo nuevo» obligan a **aclarar una vez**: ¿solo huecos y archivos nuevos **dentro** del alcance, o también piezas del remoto que no tienes instaladas?
+
+`selection.mode: partial` conserva tu contrato de mantenimiento aunque el árbol local coincida con todo el pack; `all` significa que en futuras actualizaciones el alcance es el pack completo.
 
 ## Contrato para la IA
 
@@ -61,7 +77,7 @@ Usa JSON con estos campos:
 
 - `schema_version`: `1`.
 - `source`: objeto con `location` y `ref` utilizados, y `revision` exacta o `null` si no se conoce.
-- `selection`: objeto con `mode` (`all` o `partial`) y `paths` (rutas relativas de las unidades elegidas; vacío en modo `all`).
+- `selection`: objeto con `mode` (`all` o `partial`) y `paths` (rutas relativas de las unidades elegidas; vacío en modo `all`). `partial` describe qué unidades mantienes en el contrato de actualización; no exige que falten archivos del pack en disco. Pasa a `all` solo con petición explícita de mantener el pack entero.
 - `dependencies`: rutas relativas de las dependencias resueltas para la selección.
 - `managed_files`: objeto que relaciona cada archivo realmente copiado con su SHA-256 después de copiarlo. Conserva las entradas de archivos gestionados que permanecen en disco, incluso si desaparecen del origen. Elimina entradas de archivos ausentes. No te atribuyas archivos preexistentes que no hayas copiado.
 
@@ -82,26 +98,61 @@ Las rutas son relativas al pack, sin rutas absolutas ni segmentos `..`. Distingu
 
 #### Informe de sincronización con el pack upstream
 
-Genera el informe antes de copiar, incluso con modo explícito. Indica origen, referencia, revisión disponible y alcance:
+Genera el informe **antes** de copiar, incluso con modo explícito. Indica origen, referencia, revisión disponible, `selection.mode` y rutas de alcance. Excluye el propio archivo de registro del diff del pack. Resume conteos y rutas; señala colisiones que una sobrescritura tocaría y dependencias rotas (p. ej. workflow instalado que referencia una skill ausente).
 
-| Estado | Significado dentro del alcance |
-|--------|--------------------------------|
-| Nuevo | Existe en el origen y falta localmente. |
-| Diferente | Existe en ambos con distinto contenido. Señala las ediciones locales detectadas respecto al hash registrado. |
-| Al día | Existe en ambos con el mismo contenido. |
-| Retirado del origen | Estaba gestionado y ya no pertenece al contenido vigente del alcance. |
-| Solo local, sin propiedad conocida | No lo publica el origen y no consta como gestionado. |
+Presenta **dos bloques**. No mezcles etiquetas entre bloques ni llames «nuevo» del bloque B a un hueco del bloque A.
 
-No presentes las piezas fuera del alcance como faltantes. Excluye el registro del diff del pack. Resume conteos y rutas relevantes; informa de las colisiones con archivos locales que la copia sobrescribiría.
+**Bloque A — Dentro del alcance registrado**
 
-#### Aplicación del modo
+| Estado | Significado |
+|--------|-------------|
+| Al día | En disco y coincide con la instantánea upstream (hash o equivalente). |
+| Actualizable | En disco y upstream distinto; indica si hay edición local respecto al hash registrado. |
+| Hueco en disco | Consta en alcance o `managed_files` pero falta en `docs/setup-roy/`; es reparación, no catálogo. |
+| Retirado del origen | Estaba gestionado en el alcance y ya no pertenece al contenido vigente del pack en esa ruta. |
+| Solo local, sin propiedad conocida | En disco; no lo publica el origen y no consta como gestionado. |
 
-Si el usuario ya indicó modo (integrando/sincronizar/merge, reinstalar/copia limpia, o solo añadir/no sobrescribir), aplícalo sin repetir la pregunta. En otro caso ofrece una vez los modos descritos al inicio.
+Archivos nuevos **bajo una carpeta ya en alcance** (p. ej. un archivo extra dentro de `skills/foo/` ya seleccionado) cuentan como hueco o ausente **dentro del alcance**, no como unidad «sin instalar» del bloque B.
 
-- **Integrar:** copia rutas nuevas y diferentes dentro del alcance. Conserva retirados y archivos solo locales, e informa de los que permanecen. Avisa de las sobrescrituras antes de ejecutarlas.
-- **Solo añadir:** copia rutas ausentes dentro del alcance. No sobrescribas, borres ni marques como copiados los archivos que ya existían.
-- **Reinstalar:** copia el contenido vigente dentro del alcance y elimina únicamente los archivos retirados cuya propiedad esté registrada. Lista antes los borrados previstos. Conserva los archivos locales sin propiedad conocida y los archivos fuera del alcance. Si el usuario pide borrar también archivos propios, concreta esas rutas y requiere autorización explícita para ese borrado. No borres el directorio completo como atajo.
-- **Cancelar:** no copies, borres ni actualices el registro o `AGENTS.md`.
+**Bloque B — En upstream, no en tu proyecto** (comparación unidad a unidad con el árbol local y el registro)
+
+| Estado | Significado |
+|--------|-------------|
+| Sin instalar | El origen publica la unidad, no está en disco y **no** consta en `selection.paths` (ni como dependencia resuelta). Incluye piezas que quitaste del proyecto y del registro. |
+| Nuevo en el pack (para este proyecto) | Unidad en upstream que **no** consta en `managed_files` ni en `selection.paths` / `dependencies`, y no está en disco. Clasificación por registro y árbol actual; **no** uses diff de historial git del meta-repositorio. Puede coincidir en listados con «sin instalar»; muestra una sola fila por unidad con la etiqueta que aplique (prioriza «nuevo en el pack» si nunca hubo huella en el registro). |
+
+No presentes unidades del bloque B como «faltantes del alcance» del bloque A. Las del bloque A que estén al día no requieren acción salvo que el usuario pida integrar o reinstalar.
+
+#### Plan de actualización (dos pasos)
+
+Si el usuario ya describió el plan completo (conjuntos + tratamiento de actualizables), aplícalo sin repetir preguntas. Si la petición es ambigua (p. ej. «añade lo nuevo»), aclara **una vez** y espera.
+
+**Paso 1 — Conjuntos** (ofrece una vez si falta; el usuario puede responder con números, nombres o frases cortas):
+
+| Opción | Efecto |
+|--------|--------|
+| Reparar huecos | Copia solo rutas del bloque A en estado hueco; no sobrescribe lo existente. |
+| Integrar alcance | Huecos del bloque A + archivos nuevos bajo unidades ya en alcance + actualizables del bloque A (paso 2 obligatorio si hay actualizables). |
+| Solo añadir en mi alcance | Igual que reparar huecos y ausentes **dentro del alcance**; **no** copia unidades del bloque B; **no** sobrescribe. |
+| Añadir del catálogo | Copia unidades elegidas del bloque B (sin instalar / nuevo en el pack); no sobrescribe archivos ya presentes; **amplía** `selection.paths` y dependencias resueltas. Menú una vez si no nombró piezas. |
+| Mix | Combina explícitamente las filas anteriores que el usuario indique (p. ej. integrar alcance + añadir del catálogo con lista). |
+| Sincronizar pack en disco | Copia todo lo que falte del pack upstream respecto al disco; opcionalmente alinea todo lo gestionado si el usuario lo pide en el mismo mensaje; **no** cambies `selection.mode` a `all` sin petición explícita de mantener el pack entero a futuro. |
+| Reinstalar alcance | Copia limpia todo el alcance registrado desde el origen; elimina solo gestionados retirados (lista previa). |
+| Cancelar | Sin cambios en disco, registro ni `AGENTS.md`. |
+
+**Paso 2 — Actualizables** (solo si el paso 1 incluye integrar, mix con actualización, sincronizar con alineación, o reinstalar):
+
+- **Conservar local:** no sobrescribas archivos en estado actualizable; informa qué quedó distinto.
+- **Tomar origen:** sobrescribe actualizables desde upstream; avisa antes de ejecutar.
+- **Sobrescribir todo lo gestionado:** desde upstream, todos los archivos listados en `managed_files` del alcance afectado; compatible con `selection.mode: partial` si el usuario lo pidió; avisa pérdida de ediciones locales.
+
+**Reglas de aplicación**
+
+- **Solo añadir en mi alcance** nunca amplía el catálogo (bloque B) ni sobrescribe.
+- **Añadir del catálogo** nunca sobrescribe archivos existentes; siempre amplía selección registrada.
+- **Integrar alcance** no añade unidades del bloque B salvo que el paso 1 incluya también añadir del catálogo o mix.
+- Cualquier copia de unidades del bloque B actualiza `selection.paths`, `dependencies` y `managed_files` coherently.
+- Actualiza `source.revision` solo tras operaciones completadas con éxito.
 
 Una dependencia que deje de necesitarse se trata como retirada solo si ninguna selección conservada la requiere. Si en una operación limitada otra pieza instalada todavía necesita el archivo, consérvalo. Los bloqueos de tipo archivo/carpeta o enlaces deben resolverse antes de sobrescribir; no borres contenido desconocido para forzar una copia.
 
@@ -124,12 +175,14 @@ Si existe la sección de una instalación anterior, actualiza solo ese bloque ha
 - El registro es JSON válido y refleja la selección, procedencia y archivos realmente gestionados.
 - `AGENTS.md` contiene el marcador una sola vez y conserva las instrucciones ajenas al pack.
 - No se copiaron archivos de fuera del directorio distribuible.
-- Integrar y solo añadir conservaron los archivos locales y retirados; reinstalar eliminó únicamente los archivos autorizados dentro del alcance.
-- Se han comunicado sobrescrituras, retiradas, dependencias no resueltas y cambios parciales si los hubo.
+- El informe separó bloque A (alcance) y bloque B (catálogo upstream); «solo añadir en mi alcance» no añadió unidades del bloque B sin petición explícita de catálogo.
+- Integrar, solo añadir en alcance y añadir del catálogo respetaron sobrescritura y ampliación de selección según el plan elegido; reinstalar eliminó únicamente los archivos autorizados dentro del alcance.
+- `selection.mode` solo pasó a `all` con petición explícita; disco completo con `partial` no se trató como error.
+- Se comunicaron sobrescrituras, retiradas, dependencias rotas, dependencias no resueltas y cambios parciales si los hubo.
 
 ### Respuesta al usuario
 
-Resume el modo, alcance, rutas tocadas, archivos locales o retirados conservados y resultado de la verificación. Si creaste o modificaste el bloque de `AGENTS.md`, muestra el texto final. No declares completa una instalación con dependencias necesarias sin resolver.
+Resume el plan (conjuntos del paso 1 y tratamiento de actualizables), alcance registrado, rutas tocadas, cambios en `selection.paths`, archivos locales o retirados conservados y resultado de la verificación. En actualizaciones, resume ambos bloques del informe aunque no hubiera cambios. Si creaste o modificaste el bloque de `AGENTS.md`, muestra el texto final. No declares completa una instalación con dependencias necesarias sin resolver.
 
 ## Instalación manual
 
