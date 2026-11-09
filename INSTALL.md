@@ -4,7 +4,7 @@ Este archivo define el contrato de instalación por IA. El objetivo es llevar re
 
 ## Qué verás en el chat
 
-Si pides instalar sin indicar alcance, la IA pregunta una vez si quieres **todo** o **solo piezas**. Si eliges piezas, muestra un menú construido a partir del contenido disponible, con nombre, ruta y propósito. Puedes responder con nombres, rutas o números de ese menú. Si ya indicaste el alcance, no repite la pregunta.
+Si pides instalar sin indicar alcance, la IA se detiene y pregunta una vez si quieres **todo** o **solo piezas**. No copia nada hasta que respondas. Si eliges piezas, muestra un menú construido a partir del contenido disponible, con nombre, ruta y propósito. Puedes responder con nombres, rutas o números de ese menú. Si ya indicaste el alcance, no repite la pregunta. Enlazar este archivo, o decir «según INSTALL.md», activa el contrato; no equivale a pedir el pack completo.
 
 Al terminar muestra las rutas instaladas y el resultado de la verificación. Si ya existe una instalación, aplica las reglas de mantenimiento.
 
@@ -47,7 +47,8 @@ El menú y el resumen se generan con lo descubierto. No mantengas un catálogo d
 
 - Si el usuario pidió **todo** (también completo, entero, full o all), copia todo el contenido distribuible sin menú.
 - Si nombró piezas, resuelve directamente esa selección; si pidió una selección sin concretar, muestra el menú una vez.
-- Si no indicó alcance, pregunta una vez «¿Todo setup-roy o solo piezas concretas?» con una frase sobre su objetivo, sin catálogo previo.
+- Si no indicó alcance, no copies, no crees el registro ni toques `AGENTS.md`. Pregunta una vez «¿Todo setup-roy o solo piezas concretas?» con una frase sobre su objetivo, sin catálogo previo, y espera la respuesta.
+- `mode: all` solo vale si el usuario pidió el pack entero en esta petición o en la respuesta a esa pregunta. No lo infieras porque el proyecto esté vacío, no tenga `AGENTS.md`, no exista `docs/setup-roy/`, el destino no tenga archivos, el pack «sirva entero» o el usuario haya enlazado este contrato sin decir todo.
 - Copia la selección y sus dependencias manteniendo la estructura relativa. No traslades plantillas ni archivos internos a otras partes del proyecto por el mero hecho de instalarlos.
 - Si el destino ya contiene archivos, entra en mantenimiento. Una petición explícita de añadir piezas copia solo rutas ausentes y amplía la selección registrada; no sobrescribe ni borra lo existente.
 - Crea o actualiza el registro de instalación y el enlace de `AGENTS.md` tras completar las operaciones.
@@ -117,6 +118,7 @@ Si existe la sección de una instalación anterior, actualiza solo ese bloque ha
 
 ### Verificación obligatoria
 
+- El alcance estaba explícito antes de copiar. Sin él, la única respuesta válida es la pregunta; una instalación ya hecha en ese caso no es correcta.
 - Las rutas elegidas y sus dependencias necesarias existen bajo el destino; no se copiaron piezas fuera del alcance.
 - Los archivos copiados coinciden con la instantánea de origen y conservan sus rutas relativas.
 - El registro es JSON válido y refleja la selección, procedencia y archivos realmente gestionados.
