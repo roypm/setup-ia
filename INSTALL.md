@@ -10,7 +10,9 @@ Al terminar muestra las rutas instaladas y el resultado de la verificación. Si 
 
 ## Qué verás al actualizar
 
-La IA lee el registro, toma una instantánea del origen y muestra un **informe en dos bloques** (sin copiar hasta que elijas, salvo que ya hayas indicado el plan completo):
+La IA lee el registro (si existe), toma una instantánea del origen y muestra un **informe en dos bloques** (sin copiar hasta que elijas, salvo que ya hayas indicado el plan completo en el mismo mensaje):
+
+**Peticiones genéricas.** Frases como «Actualiza setup-roy en este proyecto según …/INSTALL.md» (con enlace o referencia a este archivo) **activan el contrato** pero **no nombran un plan** de mantenimiento. Equivalen a pedir el informe y el menú: **no autorizan copiar** en ese turno. Hasta que respondas (o mandes un atajo inequívoco en un mensaje nuevo), la IA no modifica archivos bajo `docs/setup-roy/`, no crea ni reescribe `.setup-roy-install.json` y no toca el bloque `## Setup Roy` en `AGENTS.md`. No trates «actualizar» o «según INSTALL.md» como sinónimo de integrar alcance, tomar origen ni añadir catálogo.
 
 **A — Dentro de tu alcance registrado** (lo que promete `selection` y dependencias): al día, actualizable, hueco en disco, retirado del pack, solo local.
 
@@ -21,9 +23,9 @@ Tras el informe, **dos pasos** salvo que lo resuelvas en una sola frase:
 1. **Qué conjuntos tocar:** reparar huecos, actualizar lo distinto del bloque A, añadir del catálogo (bloque B: sin instalar y/o nuevo en el pack), alinear en disco todo el pack upstream (opcional, sin cambiar `mode` a `all` por defecto), reinstalar solo el alcance registrado, o cancelar.
 2. **Solo si vas a tocar lo actualizable:** conservar tus archivos locales o tomar el contenido del origen (sobrescribir; aviso de pérdida de ediciones). Variante fuerte: sobrescribir **todo** lo gestionado desde el origen aunque la selección siga en `partial`.
 
-Atajos que evitan el menú cuando son inequívocos:
+**Atajos en un solo mensaje** (sí autorizan copiar en ese turno si el plan queda claro; muestra el informe y aplica sin repetir el menú):
 
-- **Integrar alcance** — huecos + nuevos archivos dentro del alcance + actualizables tomando origen; no añade unidades del catálogo (bloque B).
+- **Integrar alcance** / «Actualiza setup-roy integrando» — huecos + nuevos archivos dentro del alcance + actualizables **tomando origen**; no añade unidades del catálogo (bloque B).
 - **Solo añadir en mi alcance** — ausentes **solo** dentro del alcance; sin sobrescribir; **no** incluye piezas del catálogo que nunca instalaste.
 - **Añadir del catálogo** / **añade del pack lo que no tengo** — copia unidades del bloque B que indiques (o un menú), sin sobrescribir lo existente; amplía `selection.paths`.
 - **Mix** — combina lo que pidas (p. ej. actualizar instalado + añadir del catálogo); en un mensaje puedes decir «mix: integra lo distinto y añade ponyskill X».
@@ -94,11 +96,13 @@ Las rutas son relativas al pack, sin rutas absolutas ni segmentos `..`. Distingu
 3. Con selección `partial`, conserva las rutas elegidas y resuelve de nuevo sus dependencias. Los nuevos archivos dentro de carpetas seleccionadas entran en alcance; las nuevas piezas fuera de ellas no se añaden automáticamente. Incluye los archivos antes gestionados bajo ese alcance y las dependencias anteriores para informar de retiradas.
 4. Si el usuario limita la operación a piezas concretas, modifica solo ese alcance. Conserva en el registro las selecciones y archivos gestionados ajenos a la operación. Añadir piezas amplía una selección parcial; no convierte una selección completa en parcial.
 5. Si una ruta seleccionada desaparece o cambia de ubicación, informa de ello. No asumas equivalencias ni conviertas la instalación en completa; conserva la selección pendiente hasta que el usuario elija sustituirla o retirarla.
-6. Para instalaciones anteriores sin registro, o con registro ilegible o de versión desconocida, no deduzcas propiedad ni selección a partir de la mera presencia de archivos. Muestra el inventario y pregunta por el alcance y el modo en una sola consulta si ambos faltan. Si el usuario ya los especificó, procede. Conserva los archivos de propiedad desconocida; registra solo lo que copies. No reemplaces un registro desconocido sin aclarar su recuperación.
+6. Para instalaciones anteriores sin registro, o con registro ilegible o de versión desconocida, no deduzcas propiedad ni selección a partir de la mera presencia de archivos. Muestra el inventario (y el informe A/B cuando puedas) y pregunta por el alcance y el modo en **una sola consulta** si ambos faltan. **Hasta la respuesta del usuario**, no copies, no crees el registro y no declares un `partial` inferido como contrato vigente. Si el usuario ya nombró alcance y un atajo/plan de la lista permitida, procede. Conserva los archivos de propiedad desconocida; registra solo lo que copies en operaciones autorizadas. No reemplaces un registro desconocido sin aclarar su recuperación.
 
 #### Informe de sincronización con el pack upstream
 
-Genera el informe **antes** de copiar, incluso con modo explícito. Indica origen, referencia, revisión disponible, `selection.mode` y rutas de alcance. Excluye el propio archivo de registro del diff del pack. Resume conteos y rutas; señala colisiones que una sobrescritura tocaría y dependencias rotas (p. ej. workflow instalado que referencia una skill ausente).
+Genera el informe **antes** de copiar en el mismo turno. Si el mensaje del usuario **no** autoriza un plan (petición genérica de actualización o enlace a este contrato sin atajo), **solo** entrega el informe y el menú de paso 1 (y paso 2 si procede); **termina sin copiar**. No titules el informe «antes de aplicar» ni «plan aplicado» si ya modificaste disco en ese turno sin autorización.
+
+Indica origen, referencia, revisión disponible, `selection.mode` y rutas de alcance cuando el registro exista; sin registro, describe el inventario local sin fijar selección en JSON. Excluye el propio archivo de registro del diff del pack. Resume conteos y rutas; señala colisiones que una sobrescritura tocaría y dependencias rotas (p. ej. workflow instalado que referencia una skill ausente).
 
 Presenta **dos bloques**. No mezcles etiquetas entre bloques ni llames «nuevo» del bloque B a un hueco del bloque A.
 
@@ -125,7 +129,9 @@ No presentes unidades del bloque B como «faltantes del alcance» del bloque A. 
 
 #### Plan de actualización (dos pasos)
 
-Si el usuario ya describió el plan completo (conjuntos + tratamiento de actualizables), aplícalo sin repetir preguntas. Si la petición es ambigua (p. ej. «añade lo nuevo»), aclara **una vez** y espera.
+**Autorización para copiar.** Copiar, sobrescribir, ampliar `selection.paths` o escribir el registro en el primer turno de una actualización requiere que el mensaje del usuario incluya, de forma inequívoca, al menos el **conjunto del paso 1** (p. ej. integrar alcance, añadir del catálogo, mix con partes nombradas). No basta con «actualiza», «mantén», «sincroniza» a secas, «según INSTALL.md» ni el enlace a este archivo. **No** infieras un plan por defecto (p. ej. integrar + tomar origen) aunque el informe muestre pocos actualizables o el bloque B sea grande.
+
+Si el usuario ya describió el plan completo (conjuntos del paso 1 + tratamiento de actualizables cuando hay actualizables en juego), aplícalo sin repetir preguntas. Si la petición es ambigua (p. ej. «añade lo nuevo»), aclara **una vez** y espera.
 
 **Paso 1 — Conjuntos** (ofrece una vez si falta; el usuario puede responder con números, nombres o frases cortas):
 
@@ -169,7 +175,9 @@ Si existe la sección de una instalación anterior, actualiza solo ese bloque ha
 
 ### Verificación obligatoria
 
-- El alcance estaba explícito antes de copiar. Sin él, la única respuesta válida es la pregunta; una instalación ya hecha en ese caso no es correcta.
+- En actualización, cada copia en el turno estuvo precedida por un plan autorizado en el mensaje del usuario (atajo o plan completo). Una petición genérica con solo enlace a este contrato **no** cumple; la respuesta válida es informe + menú sin cambios en disco.
+- Con instalación previa **sin registro**, no se creó ni rellenó `.setup-roy-install.json` ni se fijó `selection` hasta que el usuario respondió al alcance y al modo, salvo que el mismo mensaje ya los nombrara.
+- El alcance estaba explícito antes de copiar en instalaciones nuevas. Sin él, la única respuesta válida es la pregunta; una instalación ya hecha en ese caso no es correcta.
 - Las rutas elegidas y sus dependencias necesarias existen bajo el destino; no se copiaron piezas fuera del alcance.
 - Los archivos copiados coinciden con la instantánea de origen y conservan sus rutas relativas.
 - El registro es JSON válido y refleja la selección, procedencia y archivos realmente gestionados.
